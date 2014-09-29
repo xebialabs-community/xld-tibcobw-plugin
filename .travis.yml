@@ -1,0 +1,15 @@
+language: java
+notifications:
+  hipchat:
+    rooms:
+      secure: HMyBHnd4qaIjxqs0EW/JB63xv4vJZcQBpr/I7F6k6XEepIW6JjJ7P3wfXNJnbosjhGFm3RzQGAVsKPiVonMAlF1m+f3J0Mx4A4wJ1LO103maE/UCNbK3zB8sBUewjPg1eYQJ4/Wg86DowTkIDrE/XVZzNszpuXQp+cWPH6f6JVY=
+deploy:
+  provider: releases
+  api_key:
+    secure: irITEmV4StR21wzupRQGDHgC7E2rdECOnrxkCdcuPSjBgLhwxJWb8hskGzyTcpOkk2u3ldlQUAkG8JxvEiHbcOaV4z/yOwYtSptD49F9dLkZKoqNHr63IvuLgyfy0v+AEFxqiLKh/8IwdrK5pTNpfmsdZIWtd39O9tKWPBISbew=
+  file: build/libs/tibcobw-plugin-1.0.jar
+  skip_cleanup: true
+  on:
+    all_branches: true
+    tags: true
+    repo: xebialabs-community/tibcobw-plugin

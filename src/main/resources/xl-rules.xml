@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!--
+
+    THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS
+    FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
+
+-->
+<rules xmlns="http://www.xebialabs.com/xl-deploy/xl-rules">
+
+    <rule name="tibcobw.DeployedEar.CREATE_MODIFY" scope="deployed">
+        <conditions>
+            <type>tibcobw.DeployedEar</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>70</order>
+                <description expression="true">"Deploy %s to %s" % (deployed.name, deployed.container.name)</description>
+                <script>tibcobw/deploy-artifact</script>
+                <freemarker-context>
+                    <targetDeployed expression="true">delta.deployed</targetDeployed>
+                    <command>deploy</command>
+                </freemarker-context>
+                <upload-artifacts>false</upload-artifacts>
+            </os-script>
+            <os-script>
+                <order>90</order>
+                <description expression="true">"Start %s" % (deployed.name)</description>
+                <script>tibcobw/appmanage</script>
+                <freemarker-context>
+                    <targetDeployed expression="true">delta.deployed</targetDeployed>
+                    <command>start</command>
+                </freemarker-context>
+                <upload-artifacts>false</upload-artifacts>
+            </os-script>
+        </steps>
+    </rule>
+
+
+    <rule name="tibcobw.DeployedEar.MODIFY_DESTROY" scope="deployed">
+        <conditions>
+            <type>tibcobw.DeployedEar</type>
+            <operation>DESTROY</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>10</order>
+                <description expression="true">"Stop %s" % (deployed.name)</description>
+                <script>tibcobw/appmanage</script>
+                <freemarker-context>
+                    <targetDeployed expression="true">delta.previous</targetDeployed>
+                    <command>stop</command>
+                </freemarker-context>
+                <upload-artifacts>false</upload-artifacts>
+            </os-script>
+            <os-script>
+                <order>30</order>
+                <description expression="true">"Undeploy %s from %s" % (deployed.name, deployed.container.name)</description>
+                <script>tibcobw/appmanage</script>
+                <freemarker-context>
+                    <targetDeployed expression="true">delta.previous</targetDeployed>
+                    <command>undeploy</command>
+                </freemarker-context>
+                <upload-artifacts>false</upload-artifacts>
+            </os-script>
+
+        </steps>
+    </rule>
+
+    <rule name="tibcobw.DeployedEar.DESTROY" scope="deployed">
+        <conditions>
+            <type>tibcobw.DeployedEar</type>
+            <operation>DESTROY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>30</order>
+                <description expression="true">"Delete %s" % (deployed.name)</description>
+                <script>tibcobw/appmanage</script>
+                <freemarker-context>
+                    <targetDeployed expression="true">delta.previous</targetDeployed>
+                    <command>delete</command>
+                </freemarker-context>
+                <upload-artifacts>false</upload-artifacts>
+            </os-script>
+        </steps>
+    </rule>
+
+
+</rules>
+

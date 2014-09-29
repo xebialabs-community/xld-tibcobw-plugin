@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+
+    THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS
+    FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
+
+-->
+<synthetic xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd" xmlns="http://www.xebialabs.com/deployit/synthetic" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <type type="tibcobw.HawkDomain" extends="generic.Container">
+    <property name="tibcoHome" />
+    <property name="version" />
+    <property name="username" default="admin" />
+    <property name="password" default="admin" kind="string" password="true" />
+    <property name="domainPath" />
+
+    <property name="startScript" default="tibcobw/administrator/start-admin" hidden="true"/>
+    <property name="stopScript" default="tibcobw/administrator/stop-admin" hidden="true"/>
+    <method name="start"/>
+    <method name="stop"/>
+  </type>
+
+  <type type="tibcobw.EmsServer" extends="generic.Container">
+    <property name="home" />
+    <property name="server" default="tcp://localhost:7222"/>
+    <property name="username" default="admin" />
+    <property name="password" default="admin" kind="string" password="true" />
+
+    <property name="startScript" default="tibcobw/ems/start-ems-server" hidden="true"/>
+    <property name="stopScript" default="tibcobw/ems/stop-ems-server" hidden="true"/>
+    <method name="start"/>
+    <method name="stop"/>
+  </type>
+
+  <!-- Deploy EAR files -->
+  <type type="tibcobw.DeployedEar" extends="udm.BaseDeployedArtifact" deployable-type="tibcobw.Ear" container-type="tibcobw.HawkDomain">
+    <generate-deployable type="tibcobw.Ear" extends="udm.BaseDeployableFileArtifact"/>
+    <property name="restartRequired" default="false" kind="boolean" hidden="true" required="false"/>
+    <property name="applicationName" />
+  </type>
+
+
+</synthetic>
