@@ -4,6 +4,4 @@
 # FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 #
 
-echo "stop domain ${container.name}"
-echo "Not implemented yet"
-exit 10
+${deployed.container.home}/bin/tibemsadmin -server "${deployed.container.serverUrl}" -user ${deployed.container.username} -password ${deployed.container.password} -script ${deployed.file}

@@ -91,6 +91,21 @@
         </steps>
     </rule>
 
+    <rule name="tibcobw.tibcobw.ExecutedEmsScript.CREATE_MODIFY" scope="deployed">
+        <conditions>
+            <type>tibcobw.ExecutedEmsScript</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>60</order>
+                <description expression="true">"Execute EMS Script %s to %s" % (deployed.name, deployed.container.name)</description>
+                <script>tibcobw/ems/execute-script</script>
+            </os-script>
+        </steps>
+    </rule>
+
     <rule name="tibcobw.artifact.stop_and_start" scope="plan">
         <planning-script-path>tibcobw/start_stop_application.py</planning-script-path>
     </rule>

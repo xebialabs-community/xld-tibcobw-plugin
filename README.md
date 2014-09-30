@@ -11,4 +11,12 @@ The Tibco Business Work plugin is a XL Deploy plugin that adds capability for de
 ## Types ##
 
 + SharePoint Solution. 
-  * `artifact`: specify the solution file to be deployed.  
+  * `artifact`: specify the solution file to be deployed.
+    
+    
+# TODO #
+
+* Implement configure queue (instead of using EmsScript)
+* Implement configure topic (instead of using EmsScript)
+* Implement configure queue factory (instead of using EmsScript)
+

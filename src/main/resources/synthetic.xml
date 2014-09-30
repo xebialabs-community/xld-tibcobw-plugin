@@ -30,7 +30,7 @@
 
     <type type="tibcobw.EmsServer" extends="generic.Container">
         <property name="home"/>
-        <property name="server" default="tcp://localhost:7222"/>
+        <property name="serverUrl" default="tcp://localhost:7222"/>
         <property name="username" default="admin"/>
         <property name="password" default="admin" kind="string" password="true"/>
 
@@ -43,16 +43,19 @@
     <!-- Deploy EAR files -->
     <type type="tibcobw.DeployedEar" extends="udm.BaseDeployedArtifact" deployable-type="tibcobw.Ear" container-type="tibcobw.HawkDomain">
         <generate-deployable type="tibcobw.Ear" extends="udm.BaseDeployableFileArtifact"/>
-        <property name="restartRequired" default="false" kind="boolean" hidden="true" required="false"/>
         <property name="applicationName"/>
     </type>
 
     <!-- Deploy EAR Configuration files -->
     <type type="tibcobw.DeployedConfiguration" extends="udm.BaseDeployedArtifact" deployable-type="tibcobw.Configuration" container-type="tibcobw.HawkDomain">
         <generate-deployable type="tibcobw.Configuration" extends="udm.BaseDeployableFileArtifact"/>
-        <property name="restartRequired" default="false" kind="boolean" hidden="true" required="false"/>
         <property name="applicationName"/>
     </type>
 
+
+    <!-- Execute EMS Scripts -->
+    <type type="tibcobw.ExecutedEmsScript" extends="udm.BaseDeployedArtifact" deployable-type="tibcobw.EmsScript" container-type="tibcobw.EmsServer">
+        <generate-deployable type="tibcobw.EmsScript" extends="udm.BaseDeployableFileArtifact"/>
+    </type>
 
 </synthetic>
