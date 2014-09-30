@@ -26,16 +26,6 @@
                 </freemarker-context>
                 <upload-artifacts>false</upload-artifacts>
             </os-script>
-            <os-script>
-                <order>90</order>
-                <description expression="true">"Start %s" % (deployed.name)</description>
-                <script>tibcobw/appmanage</script>
-                <freemarker-context>
-                    <targetDeployed expression="true">delta.deployed</targetDeployed>
-                    <command>start</command>
-                </freemarker-context>
-                <upload-artifacts>false</upload-artifacts>
-            </os-script>
         </steps>
     </rule>
 
@@ -47,16 +37,6 @@
             <operation>MODIFY</operation>
         </conditions>
         <steps>
-            <os-script>
-                <order>10</order>
-                <description expression="true">"Stop %s" % (deployed.name)</description>
-                <script>tibcobw/appmanage</script>
-                <freemarker-context>
-                    <targetDeployed expression="true">delta.previous</targetDeployed>
-                    <command>stop</command>
-                </freemarker-context>
-                <upload-artifacts>false</upload-artifacts>
-            </os-script>
             <os-script>
                 <order>30</order>
                 <description expression="true">"Undeploy %s from %s" % (deployed.name, deployed.container.name)</description>
@@ -78,7 +58,7 @@
         </conditions>
         <steps>
             <os-script>
-                <order>30</order>
+                <order>31</order>
                 <description expression="true">"Delete %s" % (deployed.name)</description>
                 <script>tibcobw/appmanage</script>
                 <freemarker-context>
@@ -88,6 +68,31 @@
                 <upload-artifacts>false</upload-artifacts>
             </os-script>
         </steps>
+    </rule>
+
+
+    <rule name="tibcobw.DeployedConfiguration.CREATE_MODIFY" scope="deployed">
+        <conditions>
+            <type>tibcobw.DeployedConfiguration</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>71</order>
+                <description expression="true">"Deploy Configuration %s to %s" % (deployed.name, deployed.container.name)</description>
+                <script>tibcobw/deploy-artifact-configuration</script>
+                <freemarker-context>
+                    <targetDeployed expression="true">delta.deployed</targetDeployed>
+                    <command>deploy</command>
+                </freemarker-context>
+                <upload-artifacts>false</upload-artifacts>
+            </os-script>
+        </steps>
+    </rule>
+
+    <rule name="tibcobw.artifact.stop_and_start" scope="plan">
+        <planning-script-path>tibcobw/start_stop_application.py</planning-script-path>
     </rule>
 
 
