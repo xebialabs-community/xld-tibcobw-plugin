@@ -16,10 +16,16 @@
         <property name="password" default="admin" kind="string" password="true"/>
         <property name="domainPath"/>
 
-        <property name="startScript" default="tibcobw/administrator/start-admin" hidden="true"/>
-        <property name="stopScript" default="tibcobw/administrator/stop-admin" hidden="true"/>
-        <method name="start"/>
-        <method name="stop"/>
+        <property name="startHawkAgentScript" default="tibcobw/hawk/start-agent" hidden="true"/>
+        <property name="stopHawkAgentScript" default="tibcobw/hawk/stop-agent" hidden="true"/>
+
+        <property name="startDomainScript" default="tibcobw/domain/start" hidden="true"/>
+        <property name="stopDomainScript" default="tibcobw/domain/stop" hidden="true"/>
+
+        <method name="startDomain"/>
+        <method name="stopDomain"/>
+        <method name="startHawkAgent"/>
+        <method name="stopHawkAgent"/>
     </type>
 
     <type type="tibcobw.EmsServer" extends="generic.Container">
@@ -28,10 +34,10 @@
         <property name="username" default="admin"/>
         <property name="password" default="admin" kind="string" password="true"/>
 
-        <property name="startScript" default="tibcobw/ems/start-ems-server" hidden="true"/>
-        <property name="stopScript" default="tibcobw/ems/stop-ems-server" hidden="true"/>
-        <method name="start"/>
-        <method name="stop"/>
+        <property name="startEmsScript" default="tibcobw/ems/start-ems-server" hidden="true"/>
+        <property name="stopEmsScript" default="tibcobw/ems/stop-ems-server" hidden="true"/>
+        <method name="startEms"/>
+        <method name="stopEms"/>
     </type>
 
     <!-- Deploy EAR files -->
