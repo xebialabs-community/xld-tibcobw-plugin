@@ -26,7 +26,7 @@ The Tibco Business Work plugin is a XL Deploy plugin that adds capability for de
 
 This is below a typical computed task by the Tibco Business Work plugin during an upgrade.
 
-![Deployment task](update-task.jpg)
+![Deployment task](update-task.png)
     
 # TODO #
 
