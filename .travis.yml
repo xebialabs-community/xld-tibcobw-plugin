@@ -6,10 +6,10 @@ notifications:
 deploy:
   provider: releases
   api_key:
-    secure: irITEmV4StR21wzupRQGDHgC7E2rdECOnrxkCdcuPSjBgLhwxJWb8hskGzyTcpOkk2u3ldlQUAkG8JxvEiHbcOaV4z/yOwYtSptD49F9dLkZKoqNHr63IvuLgyfy0v+AEFxqiLKh/8IwdrK5pTNpfmsdZIWtd39O9tKWPBISbew=
+    secure: JMWVFqrFUK5ct80EZNHKCfLhBsW28Nuxmn/QTIwEIUamvlA5xj8ndMzxwhDNAM4q989pab7rlcsM3Tc9oc+oBKoJ5TUvFGWmZy3R8H9mNcEIuszdianbyQehZzUNzTI/vB3ZQY0YbOSWjxv6I5TjHrx9B1X2HfnLvsiU/aIT2AI=
   file: build/libs/xld-tibcobw-plugin-1.0.0.jar
   skip_cleanup: true
   on:
     all_branches: true
     tags: true
-    repo: xebialabs-community/xld-tibcobw-plugin
+
