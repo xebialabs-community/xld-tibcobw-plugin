@@ -2,7 +2,7 @@ language: java
 notifications:
   hipchat:
     rooms:
-      secure: HMyBHnd4qaIjxqs0EW/JB63xv4vJZcQBpr/I7F6k6XEepIW6JjJ7P3wfXNJnbosjhGFm3RzQGAVsKPiVonMAlF1m+f3J0Mx4A4wJ1LO103maE/UCNbK3zB8sBUewjPg1eYQJ4/Wg86DowTkIDrE/XVZzNszpuXQp+cWPH6f6JVY=
+      secure: XbA2Jh4yD9S6Kw1clA2u25iGFB+aYdONCKM2+l5tpa6HJbbCjSsa0MUaPSgQLGwosVCA4v2VdmW1AnU6K8OQFgIbSjUDl8GfocYXcadE4/LelY2E0kTw/VxG6V1QMOUThA3obS/1DwTDg8nVGzdTlwM4wHxXPADAk2+8GMhxH8E=
 deploy:
   provider: releases
   api_key:
