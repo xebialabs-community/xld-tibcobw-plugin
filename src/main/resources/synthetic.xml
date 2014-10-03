@@ -9,7 +9,7 @@
 <synthetic xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd" xmlns="http://www.xebialabs.com/deployit/synthetic"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-    <type type="tibcobw.HawkDomain" extends="generic.Container">
+    <type type="tibco.Domain" extends="generic.Container">
         <property name="tibcoHome"/>
         <property name="version"/>
         <property name="username" default="admin"/>
@@ -28,7 +28,7 @@
         <method name="stopHawkAgent"/>
     </type>
 
-    <type type="tibcobw.EmsServer" extends="generic.Container">
+    <type type="tibco.EmsServer" extends="generic.Container">
         <property name="home"/>
         <property name="serverUrl" default="tcp://localhost:7222"/>
         <property name="username" default="admin"/>
@@ -41,21 +41,35 @@
     </type>
 
     <!-- Deploy EAR files -->
-    <type type="tibcobw.DeployedEar" extends="udm.BaseDeployedArtifact" deployable-type="tibcobw.Ear" container-type="tibcobw.HawkDomain">
-        <generate-deployable type="tibcobw.Ear" extends="udm.BaseDeployableFileArtifact"/>
+    <type type="tibco.DeployedEar" extends="udm.BaseDeployedArtifact" deployable-type="tibco.Ear" container-type="tibco.Domain">
+        <generate-deployable type="tibco.Ear" extends="udm.BaseDeployableFileArtifact"/>
         <property name="applicationName"/>
     </type>
 
     <!-- Deploy EAR Configuration files -->
-    <type type="tibcobw.DeployedConfiguration" extends="udm.BaseDeployedArtifact" deployable-type="tibcobw.Configuration" container-type="tibcobw.HawkDomain">
-        <generate-deployable type="tibcobw.Configuration" extends="udm.BaseDeployableFileArtifact"/>
+    <type type="tibco.DeployedConfiguration" extends="udm.BaseDeployedArtifact" deployable-type="tibco.Configuration" container-type="tibco.Domain">
+        <generate-deployable type="tibco.Configuration" extends="udm.BaseDeployableFileArtifact"/>
         <property name="applicationName"/>
+    </type>
+
+    <!-- Execute EMS Queue -->
+    <type type="tibco.Queue" extends="udm.BaseDeployed" deployable-type="tibco.QueueSpec" container-type="tibco.EmsServer">
+        <generate-deployable type="tibco.QueueSpec" extends="udm.BaseDeployable"/>
+        <property name="store"/>
+        <property name="prefetch" default="10" kind="integer"/>
+    </type>
+
+    <!-- Execute EMS Topic -->
+    <type type="tibco.Topic" extends="udm.BaseDeployed" deployable-type="tibco.TopicSpec" container-type="tibco.EmsServer">
+        <generate-deployable type="tibco.TopicSpec" extends="udm.BaseDeployable"/>
+        <property name="store"/>
+        <property name="prefetch" default="10" kind="integer"/>
     </type>
 
 
     <!-- Execute EMS Scripts -->
-    <type type="tibcobw.ExecutedEmsScript" extends="udm.BaseDeployedArtifact" deployable-type="tibcobw.EmsScript" container-type="tibcobw.EmsServer">
-        <generate-deployable type="tibcobw.EmsScript" extends="udm.BaseDeployableFileArtifact"/>
+    <type type="tibco.ExecutedEmsScript" extends="udm.BaseDeployedArtifact" deployable-type="tibco.EmsScript" container-type="tibco.EmsServer">
+        <generate-deployable type="tibco.EmsScript" extends="udm.BaseDeployableFileArtifact"/>
     </type>
 
 </synthetic>

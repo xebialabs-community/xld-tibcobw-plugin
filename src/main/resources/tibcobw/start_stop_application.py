@@ -45,5 +45,5 @@ def add_steps_to_context(generated_steps):
     [context.addStep(step) for step in reduced_steps.values()]
 
 
-add_steps_to_context(map(generate_steps, to_delta(lambda delta: (to_deployed(delta).type in ["tibcobw.DeployedEar", 'tibcobw.DeployedConfiguration']))))
+add_steps_to_context(map(generate_steps, to_delta(lambda delta: (to_deployed(delta).type in ["tibco.DeployedEar", 'tibco.DeployedConfiguration']))))
 

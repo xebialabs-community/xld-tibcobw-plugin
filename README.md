@@ -18,9 +18,11 @@ The Tibco Business Work plugin is a XL Deploy plugin that adds capability for de
 
 ## Types ##
 
-+ tibcobw.Ear.
-+ tibcobw.Configuration.
-+ tibcobw.EmsScript.
++ tibco.Ear.
++ tibco.Configuration.
++ tibco.Queue
++ tibco.Topic
++ tibco.EmsScript.
 
 # Sample computed task #
 
@@ -28,10 +30,4 @@ This is below a typical computed task by the Tibco Business Work plugin during a
 
 ![Deployment task](update-task.png)
 
-
-# TODO #
-
-* Implement configure queue (instead of using EmsScript)
-* Implement configure topic (instead of using EmsScript)
-* Implement configure queue factory (instead of using EmsScript)
 

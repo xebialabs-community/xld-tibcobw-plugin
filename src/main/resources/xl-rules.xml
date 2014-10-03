@@ -9,9 +9,9 @@
 -->
 <rules xmlns="http://www.xebialabs.com/xl-deploy/xl-rules">
 
-    <rule name="tibcobw.DeployedEar.CREATE_MODIFY" scope="deployed">
+    <rule name="tibco.DeployedEar.CREATE_MODIFY" scope="deployed">
         <conditions>
-            <type>tibcobw.DeployedEar</type>
+            <type>tibco.DeployedEar</type>
             <operation>CREATE</operation>
             <operation>MODIFY</operation>
         </conditions>
@@ -30,9 +30,9 @@
     </rule>
 
 
-    <rule name="tibcobw.DeployedEar.MODIFY_DESTROY" scope="deployed">
+    <rule name="tibco.DeployedEar.MODIFY_DESTROY" scope="deployed">
         <conditions>
-            <type>tibcobw.DeployedEar</type>
+            <type>tibco.DeployedEar</type>
             <operation>DESTROY</operation>
             <operation>MODIFY</operation>
         </conditions>
@@ -51,9 +51,9 @@
         </steps>
     </rule>
 
-    <rule name="tibcobw.DeployedEar.DESTROY" scope="deployed">
+    <rule name="tibco.DeployedEar.DESTROY" scope="deployed">
         <conditions>
-            <type>tibcobw.DeployedEar</type>
+            <type>tibco.DeployedEar</type>
             <operation>DESTROY</operation>
         </conditions>
         <steps>
@@ -71,9 +71,9 @@
     </rule>
 
 
-    <rule name="tibcobw.DeployedConfiguration.CREATE_MODIFY" scope="deployed">
+    <rule name="tibco.DeployedConfiguration.CREATE_MODIFY" scope="deployed">
         <conditions>
-            <type>tibcobw.DeployedConfiguration</type>
+            <type>tibco.DeployedConfiguration</type>
             <operation>CREATE</operation>
             <operation>MODIFY</operation>
         </conditions>
@@ -91,9 +91,9 @@
         </steps>
     </rule>
 
-    <rule name="tibcobw.tibcobw.ExecutedEmsScript.CREATE_MODIFY" scope="deployed">
+    <rule name="tibco.tibco.ExecutedEmsScript.CREATE_MODIFY" scope="deployed">
         <conditions>
-            <type>tibcobw.ExecutedEmsScript</type>
+            <type>tibco.ExecutedEmsScript</type>
             <operation>CREATE</operation>
             <operation>MODIFY</operation>
         </conditions>
@@ -106,7 +106,84 @@
         </steps>
     </rule>
 
-    <rule name="tibcobw.artifact.stop_and_start" scope="plan">
+    <rule name="tibco.Queue.CREATE_MODIFY" scope="deployed">
+        <conditions>
+            <type>tibco.Queue</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>50</order>
+                <description expression="true">"Create queue %s to %s" % (deployed.name, deployed.container.name)</description>
+                <script>tibcobw/ems/create-resource</script>
+                <freemarker-context>
+                    <targetDeployed expression="true">delta.deployed</targetDeployed>
+                    <resource>queue</resource>
+                </freemarker-context>
+            </os-script>
+        </steps>
+    </rule>
+
+    <rule name="tibco.Queue.DESTROY_MODIFY" scope="deployed">
+        <conditions>
+            <type>tibco.Queue</type>
+            <operation>DESTROY</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>42</order>
+                <description expression="true">"Destroy queue %s to %s" % (deployed.name, deployed.container.name)</description>
+                <script>tibcobw/ems/destroy-resource</script>
+                <freemarker-context>
+                    <targetDeployed expression="true">delta.previous</targetDeployed>
+                    <resource>queue</resource>
+                </freemarker-context>
+            </os-script>
+        </steps>
+    </rule>
+
+    <rule name="tibco.Topic.CREATE_MODIFY" scope="deployed">
+        <conditions>
+            <type>tibco.Topic</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>50</order>
+                <description expression="true">"Create topic %s to %s" % (deployed.name, deployed.container.name)</description>
+                <script>tibcobw/ems/create-resource</script>
+                <freemarker-context>
+                    <targetDeployed expression="true">delta.deployed</targetDeployed>
+                    <resource>topic</resource>
+                </freemarker-context>
+            </os-script>
+        </steps>
+    </rule>
+
+    <rule name="tibco.Topic.DESTROY_MODIFY" scope="deployed">
+        <conditions>
+            <type>tibco.Topic</type>
+            <operation>DESTROY</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>42</order>
+                <description expression="true">"Destroy topic %s to %s" % (deployed.name, deployed.container.name)</description>
+                <script>tibcobw/ems/destroy-resource</script>
+                <freemarker-context>
+                    <targetDeployed expression="true">delta.previous</targetDeployed>
+                    <resource>topic</resource>
+                </freemarker-context>
+            </os-script>
+        </steps>
+    </rule>
+
+
+    <rule name="tibco.artifact.stop_and_start" scope="plan">
         <planning-script-path>tibcobw/start_stop_application.py</planning-script-path>
     </rule>
 
