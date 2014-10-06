@@ -15,11 +15,13 @@ apply plugin: "com.github.hierynomus.license"
 license {
   header rootProject.file('src/main/license/xebialabs_community.license')
   strictCheck true
-  ignoreFailures true
+  ignoreFailures false
   mapping {
     [ ftl : 'SCRIPT_STYLE']
   }
 }
+
+license.mapping("sh.ftl", "SCRIPT_STYLE")
 
 
 
