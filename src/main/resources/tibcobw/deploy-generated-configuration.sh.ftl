@@ -1,0 +1,96 @@
+<#--
+
+    THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS
+    FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
+
+-->
+
+<#assign container=targetDeployed.container />
+<#assign traHome="${container.tibcoHome}/tra/${container.version}"/>
+
+<#if targetDeployed.configurationMap??>
+
+    ${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -export -app ${targetDeployed.applicationName} -out /tmp/${targetDeployed.applicationName}.xml -user ${container.username} -pw ${container.password} -domain ${container.domainPath}
+
+    TMPFILE=$(mktemp)
+
+    cat > $TMPFILE << EOF
+<bindings>
+    <binding name="Process Archive">
+        <machine>${container.host.address}</machine>
+        <product>
+            <type>BW</type>
+            <version>5.11</version>
+            <location>/opt/tibco/bw/5.11</location>
+        </product>
+        <setting>
+            <startOnBoot>false</startOnBoot>
+            <enableVerbose>false</enableVerbose>
+            <maxLogFileSize>20000</maxLogFileSize>
+            <maxLogFileCount>5</maxLogFileCount>
+            <threadCount>8</threadCount>
+            <java>
+                <initHeapSize>32</initHeapSize>
+                <maxHeapSize>256</maxHeapSize>
+                <threadStackSize>256</threadStackSize>
+            </java>
+        </setting>
+        <shutdown>
+            <checkpoint>false</checkpoint>
+            <timeout>0</timeout>
+        </shutdown>
+    </binding>
+</bindings>
+
+EOF
+
+    xmlstarlet ed -L  --insert "/_:application/_:services/_:bw/_:NVPairs" --type elem -n xi_include \
+    	-i //xi_include --type attr -n xmlns:xi -v http://www.w3.org/2003/XInclude     \
+    	-i //xi_include --type attr -n href -v $TMPFILE -r //xi_include -v xi:include /tmp/${targetDeployed.applicationName}.xml
+
+    xmllint --xinclude /tmp/${targetDeployed.applicationName}.xml --output /tmp/${targetDeployed.applicationName}.xml
+
+    <#list targetDeployed.configurationMap?keys as key>
+        echo "---------------------------------------"
+        echo "Processing ${key} with value  ${targetDeployed.configurationMap[key]}"
+        echo "Check if the value exists"
+        XML_SEL=$(xmlstarlet sel -t -v '/_:application/_:NVPairs/_:*/_:name="${key}"' /tmp/${targetDeployed.applicationName}.xml)
+        XMLSTARLET_EXIT_CODE=$?
+        if [ $XMLSTARLET_EXIT_CODE -ne 0 ]
+        then
+            echo "[ERROR] xmlstarlet error"i >&2
+            exit 2
+        fi
+        
+        if [ "x$XML_SEL" = "xtrue" ]
+        then
+            echo "Get the packaged (default) value for ${key}"
+            xmlstarlet sel -t -v '/_:application/_:NVPairs/*[_:name="${key}"]/_:value' /tmp/${targetDeployed.applicationName}.xml
+            XMLSTARLET_EXIT_CODE=$?
+            if [ $XMLSTARLET_EXIT_CODE -ne 0 ]
+            then
+                echo "[WARNING] Cannot get the packaged value for ${key}, maybe value is empty"
+            fi
+            if [[ x"${targetDeployed.configurationMap[key]}" = x"{{"${key}"}}" ]]
+            then
+                echo "Parameter ${key} isn't defined for deploy"
+            else
+                echo "Change the value"
+                xmlstarlet edit -L -u '/_:application/_:NVPairs/*[_:name="${key}"]/_:value' -v '${targetDeployed.configurationMap[key]}' /tmp/${targetDeployed.applicationName}.xml
+                XMLSTARLET_EXIT_CODE=$?
+                if [ $XMLSTARLET_EXIT_CODE -ne 0 ]
+                then
+                    echo "[ERROR] Cannot change the packaged value for ${key} -> ${targetDeployed.configurationMap[key]}'"
+                    exit 4
+                fi
+            fi
+        else
+            echo "Skip processing ${key}"
+        fi
+    </#list>
+    echo "===XML configuration has been generated /tmp/${targetDeployed.applicationName}.xml==="
+    ${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -${command} -deployConfig /tmp/${targetDeployed.applicationName}.xml -app ${targetDeployed.applicationName} -user ${container.username} -pw ${container.password} -domain ${container.domainPath}
+<#else>
+    echo "[WARNING] There is no configuration data, please use configurationMap propeprty to fix it or use tibco.Configuration artifact" >&2
+</#if>

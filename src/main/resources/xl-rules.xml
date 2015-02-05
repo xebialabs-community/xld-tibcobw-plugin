@@ -24,6 +24,16 @@
                     <targetDeployed expression="true">delta.deployed</targetDeployed>
                     <command>deploy</command>
                 </freemarker-context>
+                <upload-artifacts>true</upload-artifacts>
+            </os-script>
+            <os-script>
+                <order>75</order>
+                <description expression="true">"Deploy Generated Configuration %s to %s" % (deployed.name, deployed.container.name)</description>
+                <script>tibcobw/deploy-generated-configuration</script>
+                <freemarker-context>
+                    <targetDeployed expression="true">delta.deployed</targetDeployed>
+                    <command>deploy</command>
+                </freemarker-context>
                 <upload-artifacts>false</upload-artifacts>
             </os-script>
         </steps>

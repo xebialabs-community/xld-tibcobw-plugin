@@ -44,6 +44,7 @@
     <type type="tibco.DeployedEar" extends="udm.BaseDeployedArtifact" deployable-type="tibco.Ear" container-type="tibco.Domain">
         <generate-deployable type="tibco.Ear" extends="udm.BaseDeployableFileArtifact"/>
         <property name="applicationName"/>
+	<property name="configurationMap" kind="map_string_string" required="false" />
     </type>
 
     <!-- Deploy EAR Configuration files -->
