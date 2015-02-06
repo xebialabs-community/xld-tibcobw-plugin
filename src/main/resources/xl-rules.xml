@@ -80,7 +80,79 @@
         </steps>
     </rule>
 
+    <rule name="tibco.DeployedBwaaLibrary.CREATE_MODIFY" scope="deployed">
+        <conditions>
+            <type>tibco.DeployedBwaaLibrary</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>50</order>
+                <description expression="true">"Deploy BWWA library %s to %s" % (deployed.name, deployed.container.name)</description>
+                <script>tibcobw/bwaa/deploy-lib</script>
+                <freemarker-context>
+                    <targetDeployed expression="true">delta.deployed</targetDeployed>
+                </freemarker-context>
+                <upload-artifacts>true</upload-artifacts>
+            </os-script>
+        </steps>
+    </rule>
 
+    <rule name="tibco.DeployedBwaaLibrary.DESTROY" scope="deployed">
+        <conditions>
+            <type>tibco.DeployedBwaaLibrary</type>
+            <operation>DESTROY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>42</order>
+                <description expression="true">"Remove BWAA aspect %s from %s" % (deployed.name, deployed.container.name)</description>
+                <script>tibcobw/bwaa/remove-lib</script>
+                <freemarker-context>
+                    <targetDeployed expression="true">delta.previous</targetDeployed>
+                </freemarker-context>
+                <upload-artifacts>false</upload-artifacts>
+            </os-script>
+        </steps>
+    </rule>
+
+    <rule name="tibco.DeployedBwaaAspect.CREATE_MODIFY" scope="deployed">
+        <conditions>
+            <type>tibco.DeployedBwaaAspect</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>50</order>
+                <description expression="true">"Deploy BWWA aspect %s to %s" % (deployed.name, deployed.container.name)</description>
+                <script>tibcobw/bwaa/deploy-aspect</script>
+                <freemarker-context>
+                    <targetDeployed expression="true">delta.deployed</targetDeployed>
+                </freemarker-context>
+                <upload-artifacts>true</upload-artifacts>
+            </os-script>
+        </steps>
+    </rule>
+
+    <rule name="tibco.DeployedBwaaAspect.DESTROY" scope="deployed">
+        <conditions>
+            <type>tibco.DeployedBwaaAspect</type>
+            <operation>DESTROY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>42</order>
+                <description expression="true">"Remove BWAA aspect %s from %s" % (deployed.name, deployed.container.name)</description>
+                <script>tibcobw/bwaa/remove-aspect</script>
+                <freemarker-context>
+                    <targetDeployed expression="true">delta.previous</targetDeployed>
+                </freemarker-context>
+                <upload-artifacts>false</upload-artifacts>
+            </os-script>
+        </steps>
+    </rule>
     <rule name="tibco.DeployedConfiguration.CREATE_MODIFY" scope="deployed">
         <conditions>
             <type>tibco.DeployedConfiguration</type>

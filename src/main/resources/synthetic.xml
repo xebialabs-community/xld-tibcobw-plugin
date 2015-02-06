@@ -15,6 +15,8 @@
         <property name="username" default="admin"/>
         <property name="password" default="admin" kind="string" password="true"/>
         <property name="domainPath"/>
+        <property name="BwaaLibraryPath"/>
+        <property name="BwaaAspectPath"/>
 
         <property name="startHawkAgentScript" default="tibcobw/hawk/start-agent" hidden="true"/>
         <property name="stopHawkAgentScript" default="tibcobw/hawk/stop-agent" hidden="true"/>
@@ -52,7 +54,17 @@
         <generate-deployable type="tibco.Configuration" extends="udm.BaseDeployableFileArtifact"/>
         <property name="applicationName"/>
     </type>
+    
+    <!-- Deploy BWAA files -->
+    <type type="tibco.DeployedBwaaLibrary" extends="udm.BaseDeployedArtifact" deployable-type="tibco.BwaaLib" container-type="tibco.Domain">
+        <generate-deployable type="tibco.BwaaLib" extends="udm.BaseDeployableFileArtifact"/>
+        <property name="aspectName"/>
+    </type>
 
+    <type type="tibco.DeployedBwaaAspect" extends="udm.BaseDeployedArtifact" deployable-type="tibco.BwaaAspect" container-type="tibco.Domain">
+        <generate-deployable type="tibco.BwaaAspect" extends="udm.BaseDeployableFileArtifact"/>
+        <property name="aspectName"/>
+    </type>
     <!-- Execute EMS Queue -->
     <type type="tibco.Queue" extends="udm.BaseDeployed" deployable-type="tibco.QueueSpec" container-type="tibco.EmsServer">
         <generate-deployable type="tibco.QueueSpec" extends="udm.BaseDeployable"/>
