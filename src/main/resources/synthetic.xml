@@ -17,6 +17,7 @@
         <property name="domainPath"/>
         <property name="BwaaLibraryPath"/>
         <property name="BwaaAspectPath"/>
+        <property name="PrependLibsPath"/>
 
         <property name="startHawkAgentScript" default="tibcobw/hawk/start-agent" hidden="true"/>
         <property name="stopHawkAgentScript" default="tibcobw/hawk/stop-agent" hidden="true"/>
@@ -54,7 +55,13 @@
         <generate-deployable type="tibco.Configuration" extends="udm.BaseDeployableFileArtifact"/>
         <property name="applicationName"/>
     </type>
-    
+
+    <!-- Deploy prepend libraries -->
+    <type type="tibco.DeployedPrependLibrary" extends="udm.BaseDeployedArtifact" deployable-type="tibco.PrependLib" container-type="tibco.Domain">
+        <generate-deployable type="tibco.PrependLib" extends="udm.BaseDeployableFileArtifact"/>
+        <property name="libraryName"/>
+    </type>
+
     <!-- Deploy BWAA files -->
     <type type="tibco.DeployedBwaaLibrary" extends="udm.BaseDeployedArtifact" deployable-type="tibco.BwaaLib" container-type="tibco.Domain">
         <generate-deployable type="tibco.BwaaLib" extends="udm.BaseDeployableFileArtifact"/>
