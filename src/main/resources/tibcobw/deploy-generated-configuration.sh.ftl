@@ -45,6 +45,7 @@
 
 EOF
 
+    xmlstarlet ed -L -d  "/_:application/_:services/_:bw/_:bindings" /tmp/${targetDeployed.applicationName}.xml
     xmlstarlet ed -L  --insert "/_:application/_:services/_:bw/_:NVPairs" --type elem -n xi_include \
     	-i //xi_include --type attr -n xmlns:xi -v http://www.w3.org/2003/XInclude     \
     	-i //xi_include --type attr -n href -v $TMPFILE -r //xi_include -v xi:include /tmp/${targetDeployed.applicationName}.xml
@@ -91,6 +92,9 @@ EOF
     </#list>
     echo "===XML configuration has been generated /tmp/${targetDeployed.applicationName}.xml==="
     ${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -${command} -deployConfig /tmp/${targetDeployed.applicationName}.xml -app ${targetDeployed.applicationName} -user ${container.username} -pw ${container.password} -domain ${container.domainPath}
+    
+    rm /tmp/${targetDeployed.applicationName}.xml
+
 <#else>
     echo "[WARNING] There is no configuration data, please use configurationMap propeprty to fix it or use tibco.Configuration artifact" >&2
 </#if>
