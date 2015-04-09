@@ -18,11 +18,11 @@
     cat > $TMPFILE << EOF
 <bindings>
     <binding name="Process Archive">
-        <machine>${container.host.address}</machine>
+        <machine>${targetDeployed.firstNode.host.address}</machine>
         <product>
             <type>BW</type>
-            <version>5.11</version>
-            <location>/opt/tibco/bw/5.11</location>
+            <version>${targetDeployed.firstNode.version}</version>
+            <location>${targetDeployed.firstNode.path}</location>
         </product>
         <setting>
             <startOnBoot>false</startOnBoot>
@@ -36,21 +36,63 @@
                 <threadStackSize>256</threadStackSize>
             </java>
         </setting>
+        <ftWeight>${targetDeployed.firstNodeWeight}</ftWeight>
         <shutdown>
             <checkpoint>false</checkpoint>
             <timeout>0</timeout>
         </shutdown>
     </binding>
+
+<#if targetDeployed.secondNode??>
+
+    <binding name="Process Archive-1">
+        <machine>${targetDeployed.secondNode.host.address}</machine>
+        <product>
+            <type>BW</type>
+            <version>${targetDeployed.secondNode.version}</version>
+            <location>${targetDeployed.secondNode.path}</location>
+        </product>
+        <setting>
+            <startOnBoot>false</startOnBoot>
+            <enableVerbose>false</enableVerbose>
+            <maxLogFileSize>20000</maxLogFileSize>
+            <maxLogFileCount>5</maxLogFileCount>
+            <threadCount>8</threadCount>
+            <java>
+                <initHeapSize>32</initHeapSize>
+                <maxHeapSize>256</maxHeapSize>
+                <threadStackSize>256</threadStackSize>
+            </java>
+        </setting>
+        <ftWeight>${targetDeployed.secondNodeWeight}</ftWeight>
+        <shutdown>
+            <checkpoint>false</checkpoint>
+            <timeout>0</timeout>
+        </shutdown>
+    </binding>
+
+</#if>
+
 </bindings>
 
 EOF
 
-    xmlstarlet ed -L -d  "/_:application/_:services/_:bw/_:bindings" /tmp/${targetDeployed.applicationName}.xml
+<#if targetDeployed.runFaultTolerant>
+
+xmlstarlet ed -L  -u "/_:application/_:services/_:bw/_:isFt" -v "true" /tmp/${targetDeployed.applicationName}.xml
+xmlstarlet ed -L  -a "/_:application/_:services/_:bw/_:isFt" --type elem -n "faultTolerant" /tmp/${targetDeployed.applicationName}.xml
+xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --type elem -n "hbInterval" -v ${targetDeployed.heartbeatInterval} /tmp/${targetDeployed.applicationName}.xml
+xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --type elem -n "activationInterval" -v ${targetDeployed.activationInterval} /tmp/${targetDeployed.applicationName}.xml
+xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --type elem -n "preparationDelay" -v ${targetDeployed.activationDelay} /tmp/${targetDeployed.applicationName}.xml
+
+</#if>
+
+    xmlstarlet ed -L -d  "/_:application/_:services/_:bw/_:bindings" /tmp/${targetDeployed.applicationName}.xml || exit 1
     xmlstarlet ed -L  --insert "/_:application/_:services/_:bw/_:NVPairs" --type elem -n xi_include \
     	-i //xi_include --type attr -n xmlns:xi -v http://www.w3.org/2003/XInclude     \
-    	-i //xi_include --type attr -n href -v $TMPFILE -r //xi_include -v xi:include /tmp/${targetDeployed.applicationName}.xml
+    	-i //xi_include --type attr -n href -v $TMPFILE -r //xi_include -v xi:include /tmp/${targetDeployed.applicationName}.xml || exit 1
 
-    xmllint --xinclude /tmp/${targetDeployed.applicationName}.xml --output /tmp/${targetDeployed.applicationName}.xml
+    xmllint --xinclude /tmp/${targetDeployed.applicationName}.xml --output /tmp/${targetDeployed.applicationName}.xml || exit 1
 
     <#list targetDeployed.configurationMap?keys as key>
         echo "---------------------------------------"
@@ -91,7 +133,7 @@ EOF
         fi
     </#list>
     echo "===XML configuration has been generated /tmp/${targetDeployed.applicationName}.xml==="
-    ${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -${command} -deployConfig /tmp/${targetDeployed.applicationName}.xml -app ${targetDeployed.applicationName} -user ${container.username} -pw ${container.password} -domain ${container.domainPath}
+    ${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -${command} -deployConfig /tmp/${targetDeployed.applicationName}.xml -app ${targetDeployed.applicationName} -user ${container.username} -pw ${container.password} -domain ${container.domainPath} || exit 2
     
     rm /tmp/${targetDeployed.applicationName}.xml
 
