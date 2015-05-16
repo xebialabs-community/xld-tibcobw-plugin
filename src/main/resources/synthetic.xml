@@ -58,6 +58,7 @@
         <property name="applicationName"/>
 	<property name="configurationMap" kind="map_string_string" required="false" />
         <property name="configurationMapSesure" kind="map_string_string" password="true" required="false" />
+	<property name="configurationMapAdapterSDK" kind="map_string_string" required="false" />
         <property name="firstNode" kind="ci" referenced-type="tibco.Node" required="true"/>
         <property name="firstNodeWeight" kind="integer" default="200" required="true"/>
 	<property name="secondNode" kind="ci" referenced-type="tibco.Node" required="false"/>

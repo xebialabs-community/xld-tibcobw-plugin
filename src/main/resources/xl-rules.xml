@@ -49,7 +49,7 @@
         <steps>
             <os-script>
                 <order>30</order>
-                <description expression="true">"Undeploy %s from %s" % (deployed.name, deployed.container.name)</description>
+                <description expression="true">"Undeploy %s from %s" % (previousDeployed.name, previousDeployed.container.name)</description>
                 <script>tibcobw/appmanage</script>
                 <freemarker-context>
                     <targetDeployed expression="true">delta.previous</targetDeployed>
@@ -69,7 +69,7 @@
         <steps>
             <os-script>
                 <order>31</order>
-                <description expression="true">"Delete %s" % (deployed.name)</description>
+                <description expression="true">"Delete %s" % (previousDeployed.name)</description>
                 <script>tibcobw/appmanage</script>
                 <freemarker-context>
                     <targetDeployed expression="true">delta.previous</targetDeployed>
@@ -107,7 +107,7 @@
         <steps>
             <os-script>
                 <order>42</order>
-                <description expression="true">"Remove BWAA library %s from %s" % (deployed.name, deployed.container.name)</description>
+                <description expression="true">"Remove BWAA library %s from %s" % (previousDeployed.name, previousDeployed.container.name)</description>
                 <script>tibcobw/bwaa/remove-lib</script>
                 <freemarker-context>
                     <targetDeployed expression="true">delta.previous</targetDeployed>
@@ -144,7 +144,7 @@
         <steps>
             <os-script>
                 <order>42</order>
-                <description expression="true">"Remove BWAA aspect %s from %s" % (deployed.name, deployed.container.name)</description>
+                <description expression="true">"Remove BWAA aspect %s from %s" % (previousDeployed.name, previousDeployed.container.name)</description>
                 <script>tibcobw/bwaa/remove-aspect</script>
                 <freemarker-context>
                     <targetDeployed expression="true">delta.previous</targetDeployed>
@@ -181,7 +181,7 @@
         <steps>
             <os-script>
                 <order>42</order>
-                <description expression="true">"Remove prepend library %s from %s" % (deployed.name, deployed.container.name)</description>
+                <description expression="true">"Remove prepend library %s from %s" % (previousDeployed.name, previousDeployed.container.name)</description>
                 <script>tibcobw/prepend-lib/remove-lib</script>
                 <freemarker-context>
                     <targetDeployed expression="true">delta.previous</targetDeployed>
@@ -254,7 +254,7 @@
         <steps>
             <os-script>
                 <order>42</order>
-                <description expression="true">"Destroy queue %s to %s" % (deployed.name, deployed.container.name)</description>
+                <description expression="true">"Destroy queue %s to %s" % (previousDeployed.name, previousDOBeployed.container.name)</description>
                 <script>tibcobw/ems/destroy-resource</script>
                 <freemarker-context>
                     <targetDeployed expression="true">delta.previous</targetDeployed>
@@ -292,7 +292,7 @@
         <steps>
             <os-script>
                 <order>42</order>
-                <description expression="true">"Destroy topic %s to %s" % (deployed.name, deployed.container.name)</description>
+                <description expression="true">"Destroy topic %s to %s" % (previousDeployed.name, previousDeployed.container.name)</description>
                 <script>tibcobw/ems/destroy-resource</script>
                 <freemarker-context>
                     <targetDeployed expression="true">delta.previous</targetDeployed>

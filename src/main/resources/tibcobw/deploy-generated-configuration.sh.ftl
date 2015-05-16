@@ -6,6 +6,7 @@
 
 -->
 
+
 <#assign container=targetDeployed.container />
 <#assign traHome="${container.tibcoHome}/tra/${container.version}"/>
 
@@ -131,6 +132,45 @@ xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --t
         else
             echo "Skip processing ${key}"
         fi
+    </#list>
+    <#list targetDeployed.configurationMapAdapterSDK?keys as key>
+        echo "---------------------------------------"
+        echo "Processing ${key} with value  ${targetDeployed.configurationMapAdapterSDK[key]}"
+        echo "Check if the value exists"
+	XML_SEL=$(xmlstarlet sel -t -v '/_:application/_:services/_:bw/_:NVPairs/_:*/_:name="${key}"' /tmp/${targetDeployed.applicationName}.xml)
+        XMLSTARLET_EXIT_CODE=$?
+        if [ $XMLSTARLET_EXIT_CODE -ne 0 ]
+        then
+            echo "[ERROR] xmlstarlet error"i >&2
+            exit 2
+        fi
+        if [ "x$XML_SEL" = "xtrue" ]
+        then
+            echo "Get the packaged (default) value for ${key}"
+            xmlstarlet sel -t -v '/_:application/_:services/_:bw/_:NVPairs/*[_:name="${key}"]/_:value' /tmp/${targetDeployed.applicationName}.xml
+            XMLSTARLET_EXIT_CODE=$?
+            if [ $XMLSTARLET_EXIT_CODE -ne 0 ]
+            then
+                echo "[WARNING] Cannot get the packaged value for ${key}, maybe value is empty"
+            fi
+            if [[ x"${targetDeployed.configurationMapAdapterSDK[key]}" = x"{{"${key}"}}" ]]
+            then
+                echo "Parameter ${key} isn't defined for deploy"
+            else
+                echo "Change the value"
+                xmlstarlet edit -L -u '/_:application/_:services/_:bw/_:NVPairs/*[_:name="${key}"]/_:value' -v '${targetDeployed.configurationMapAdapterSDK[key]}' /tmp/${targetDeployed.applicationName}.xml
+                XMLSTARLET_EXIT_CODE=$?
+                if [ $XMLSTARLET_EXIT_CODE -ne 0 ]
+                then
+                    echo "[ERROR] Cannot change the packaged value for ${key} -> ${targetDeployed.configurationMapAdapterSDK[key]}'"
+                    exit 4
+                fi
+            fi
+        else
+            echo "Skip processing ${key}"
+        fi
+
+	                                     
     </#list>
     echo "===XML configuration has been generated /tmp/${targetDeployed.applicationName}.xml==="
     ${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -${command} -deployConfig /tmp/${targetDeployed.applicationName}.xml -app ${targetDeployed.applicationName} -user ${container.username} -pw ${container.password} -domain ${container.domainPath} || exit 2
