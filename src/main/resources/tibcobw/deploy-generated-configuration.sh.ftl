@@ -10,9 +10,11 @@
 <#assign container=targetDeployed.container />
 <#assign traHome="${container.tibcoHome}/tra/${container.version}"/>
 
+TMPXML=$(mktemp /tmp/${targetDeployed.applicationName}-XXXXXXX.xml)
+
 <#if targetDeployed.configurationMap??>
 
-    ${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -export -app ${targetDeployed.applicationName} -out /tmp/${targetDeployed.applicationName}.xml -user ${container.username} -pw ${container.password} -domain ${container.domainPath}
+    ${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -export -app ${targetDeployed.applicationName} -out $TMPXML -user ${container.username} -pw ${container.password} -domain ${container.domainPath}
 
     TMPFILE=$(mktemp)
 
@@ -80,26 +82,26 @@ EOF
 
 <#if targetDeployed.runFaultTolerant>
 
-xmlstarlet ed -L  -u "/_:application/_:services/_:bw/_:isFt" -v "true" /tmp/${targetDeployed.applicationName}.xml
-xmlstarlet ed -L  -a "/_:application/_:services/_:bw/_:isFt" --type elem -n "faultTolerant" /tmp/${targetDeployed.applicationName}.xml
-xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --type elem -n "hbInterval" -v ${targetDeployed.heartbeatInterval} /tmp/${targetDeployed.applicationName}.xml
-xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --type elem -n "activationInterval" -v ${targetDeployed.activationInterval} /tmp/${targetDeployed.applicationName}.xml
-xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --type elem -n "preparationDelay" -v ${targetDeployed.activationDelay} /tmp/${targetDeployed.applicationName}.xml
+xmlstarlet ed -L  -u "/_:application/_:services/_:bw/_:isFt" -v "true" $TMPXML
+xmlstarlet ed -L  -a "/_:application/_:services/_:bw/_:isFt" --type elem -n "faultTolerant" $TMPXML
+xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --type elem -n "hbInterval" -v ${targetDeployed.heartbeatInterval} $TMPXML
+xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --type elem -n "activationInterval" -v ${targetDeployed.activationInterval} $TMPXML
+xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --type elem -n "preparationDelay" -v ${targetDeployed.activationDelay} $TMPXML
 
 </#if>
 
-    xmlstarlet ed -L -d  "/_:application/_:services/_:bw/_:bindings" /tmp/${targetDeployed.applicationName}.xml || exit 1
+    xmlstarlet ed -L -d  "/_:application/_:services/_:bw/_:bindings" $TMPXML || exit 1
     xmlstarlet ed -L  --insert "/_:application/_:services/_:bw/_:NVPairs" --type elem -n xi_include \
     	-i //xi_include --type attr -n xmlns:xi -v http://www.w3.org/2003/XInclude     \
-    	-i //xi_include --type attr -n href -v $TMPFILE -r //xi_include -v xi:include /tmp/${targetDeployed.applicationName}.xml || exit 1
+    	-i //xi_include --type attr -n href -v $TMPFILE -r //xi_include -v xi:include $TMPXML || exit 1
 
-    xmllint --xinclude /tmp/${targetDeployed.applicationName}.xml --output /tmp/${targetDeployed.applicationName}.xml || exit 1
+    xmllint --xinclude $TMPXML --output $TMPXML || exit 1
 
     <#list targetDeployed.configurationMap?keys as key>
         echo "---------------------------------------"
         echo "Processing ${key} with value  ${targetDeployed.configurationMap[key]}"
         echo "Check if the value exists"
-        XML_SEL=$(xmlstarlet sel -t -v '/_:application/_:NVPairs/_:*/_:name="${key}"' /tmp/${targetDeployed.applicationName}.xml)
+        XML_SEL=$(xmlstarlet sel -t -v '/_:application/_:NVPairs/_:*/_:name="${key}"' $TMPXML)
         XMLSTARLET_EXIT_CODE=$?
         if [ $XMLSTARLET_EXIT_CODE -ne 0 ]
         then
@@ -110,7 +112,7 @@ xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --t
         if [ "x$XML_SEL" = "xtrue" ]
         then
             echo "Get the packaged (default) value for ${key}"
-            xmlstarlet sel -t -v '/_:application/_:NVPairs/*[_:name="${key}"]/_:value' /tmp/${targetDeployed.applicationName}.xml
+            xmlstarlet sel -t -v '/_:application/_:NVPairs/*[_:name="${key}"]/_:value' $TMPXML
             XMLSTARLET_EXIT_CODE=$?
             if [ $XMLSTARLET_EXIT_CODE -ne 0 ]
             then
@@ -121,7 +123,7 @@ xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --t
                 echo "Parameter ${key} isn't defined for deploy"
             else
                 echo "Change the value"
-                xmlstarlet edit -L -u '/_:application/_:NVPairs/*[_:name="${key}"]/_:value' -v '${targetDeployed.configurationMap[key]}' /tmp/${targetDeployed.applicationName}.xml
+                xmlstarlet edit -L -u '/_:application/_:NVPairs/*[_:name="${key}"]/_:value' -v '${targetDeployed.configurationMap[key]}' $TMPXML
                 XMLSTARLET_EXIT_CODE=$?
                 if [ $XMLSTARLET_EXIT_CODE -ne 0 ]
                 then
@@ -137,7 +139,7 @@ xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --t
         echo "---------------------------------------"
         echo "Processing ${key} with value  ${targetDeployed.configurationMapAdapterSDK[key]}"
         echo "Check if the value exists"
-	XML_SEL=$(xmlstarlet sel -t -v '/_:application/_:services/_:bw/_:NVPairs/_:*/_:name="${key}"' /tmp/${targetDeployed.applicationName}.xml)
+	XML_SEL=$(xmlstarlet sel -t -v '/_:application/_:services/_:bw/_:NVPairs/_:*/_:name="${key}"' $TMPXML)
         XMLSTARLET_EXIT_CODE=$?
         if [ $XMLSTARLET_EXIT_CODE -ne 0 ]
         then
@@ -147,7 +149,7 @@ xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --t
         if [ "x$XML_SEL" = "xtrue" ]
         then
             echo "Get the packaged (default) value for ${key}"
-            xmlstarlet sel -t -v '/_:application/_:services/_:bw/_:NVPairs/*[_:name="${key}"]/_:value' /tmp/${targetDeployed.applicationName}.xml
+            xmlstarlet sel -t -v '/_:application/_:services/_:bw/_:NVPairs/*[_:name="${key}"]/_:value' $TMPXML
             XMLSTARLET_EXIT_CODE=$?
             if [ $XMLSTARLET_EXIT_CODE -ne 0 ]
             then
@@ -158,7 +160,7 @@ xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --t
                 echo "Parameter ${key} isn't defined for deploy"
             else
                 echo "Change the value"
-                xmlstarlet edit -L -u '/_:application/_:services/_:bw/_:NVPairs/*[_:name="${key}"]/_:value' -v '${targetDeployed.configurationMapAdapterSDK[key]}' /tmp/${targetDeployed.applicationName}.xml
+                xmlstarlet edit -L -u '/_:application/_:services/_:bw/_:NVPairs/*[_:name="${key}"]/_:value' -v '${targetDeployed.configurationMapAdapterSDK[key]}' $TMPXML
                 XMLSTARLET_EXIT_CODE=$?
                 if [ $XMLSTARLET_EXIT_CODE -ne 0 ]
                 then
@@ -172,10 +174,10 @@ xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --t
 
 	                                     
     </#list>
-    echo "===XML configuration has been generated /tmp/${targetDeployed.applicationName}.xml==="
-    ${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -${command} -deployConfig /tmp/${targetDeployed.applicationName}.xml -app ${targetDeployed.applicationName} -user ${container.username} -pw ${container.password} -domain ${container.domainPath} || exit 2
+    echo "===XML configuration has been generated $TMPXML==="
+    ${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -${command} -deployConfig $TMPXML -app ${targetDeployed.applicationName} -user ${container.username} -pw ${container.password} -domain ${container.domainPath} || exit 2
     
-    rm /tmp/${targetDeployed.applicationName}.xml
+    rm $TMPXML
 
 <#else>
     echo "[WARNING] There is no configuration data, please use configurationMap propeprty to fix it or use tibco.Configuration artifact" >&2
