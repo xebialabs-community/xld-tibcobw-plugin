@@ -116,7 +116,7 @@ xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --t
             then
                 echo "[WARNING] Cannot get the packaged value for ${key}, maybe value is empty"
             fi
-            if [[ x"${targetDeployed.configurationMap[key]}" = x"{{"${key}"}}" ]]
+            if [[ x"${targetDeployed.configurationMap[key]}" = x"{{"*${key}"}}" ]]
             then
                 echo "Parameter ${key} isn't defined for deploy"
             else
@@ -153,7 +153,7 @@ xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --t
             then
                 echo "[WARNING] Cannot get the packaged value for ${key}, maybe value is empty"
             fi
-            if [[ x"${targetDeployed.configurationMapAdapterSDK[key]}" = x"{{"${key}"}}" ]]
+            if [[ x"${targetDeployed.configurationMapAdapterSDK[key]}" == x"{{"*${key}"}}" ]]
             then
                 echo "Parameter ${key} isn't defined for deploy"
             else
