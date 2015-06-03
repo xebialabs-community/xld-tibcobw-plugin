@@ -2,7 +2,7 @@
 
 This document describes the functionality provided by the [Tibco Business Work](http://www.tibco.com/products/automation/application-integration/activematrix-businessworks) plugin.
 
-See the [**XL Deploy Reference Manual**](http://docs.xebialabs.com/releases/latest/xl-deploy/starthere.html) for background information on XL Deploy and deployment concepts.
+See the [**XL Deploy product description**](https://docs.xebialabs.com/xl-deploy/) for background information on XL Deploy and deployment concepts.
 
 # Overview #
 
@@ -18,11 +18,17 @@ The Tibco Business Work plugin is a XL Deploy plugin that adds capability for de
 
 ## Types ##
 
-+ tibco.Ear.
-+ tibco.Configuration.
++ tibco.Ear
++ tibco.Domain
++ tibco.Node
++ tibco.Configuration
 + tibco.Queue
 + tibco.Topic
-+ tibco.EmsScript.
++ tibco.EmsScript
++ tibco.PrependLib
++ tibco.BwaaLib
++ tibco.BwaaAspect
+
 
 # Sample computed task #
 
