@@ -24,6 +24,16 @@
                     <targetDeployed expression="true">delta.deployed</targetDeployed>
                     <command>deploy</command>
                 </freemarker-context>
+                <upload-artifacts>true</upload-artifacts>
+            </os-script>
+            <os-script>
+                <order>75</order>
+                <description expression="true">"Deploy Generated Configuration %s to %s" % (deployed.name, deployed.container.name)</description>
+                <script>tibcobw/deploy-generated-configuration</script>
+                <freemarker-context>
+                    <targetDeployed expression="true">delta.deployed</targetDeployed>
+                    <command>deploy</command>
+                </freemarker-context>
                 <upload-artifacts>false</upload-artifacts>
             </os-script>
         </steps>
@@ -39,7 +49,7 @@
         <steps>
             <os-script>
                 <order>30</order>
-                <description expression="true">"Undeploy %s from %s" % (deployed.name, deployed.container.name)</description>
+                <description expression="true">"Undeploy %s from %s" % (previousDeployed.name, previousDeployed.container.name)</description>
                 <script>tibcobw/appmanage</script>
                 <freemarker-context>
                     <targetDeployed expression="true">delta.previous</targetDeployed>
@@ -59,7 +69,7 @@
         <steps>
             <os-script>
                 <order>31</order>
-                <description expression="true">"Delete %s" % (deployed.name)</description>
+                <description expression="true">"Delete %s" % (previousDeployed.name)</description>
                 <script>tibcobw/appmanage</script>
                 <freemarker-context>
                     <targetDeployed expression="true">delta.previous</targetDeployed>
@@ -70,6 +80,116 @@
         </steps>
     </rule>
 
+    <rule name="tibco.DeployedBwaaLibrary.CREATE_MODIFY" scope="deployed">
+        <conditions>
+            <type>tibco.DeployedBwaaLibrary</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>50</order>
+                <description expression="true">"Deploy BWWA library %s to %s" % (deployed.name, deployed.container.name)</description>
+                <script>tibcobw/bwaa/deploy-lib</script>
+                <freemarker-context>
+                    <targetDeployed expression="true">delta.deployed</targetDeployed>
+                </freemarker-context>
+                <upload-artifacts>true</upload-artifacts>
+            </os-script>
+        </steps>
+    </rule>
+
+    <rule name="tibco.DeployedBwaaLibrary.DESTROY" scope="deployed">
+        <conditions>
+            <type>tibco.DeployedBwaaLibrary</type>
+            <operation>DESTROY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>42</order>
+                <description expression="true">"Remove BWAA library %s from %s" % (previousDeployed.name, previousDeployed.container.name)</description>
+                <script>tibcobw/bwaa/remove-lib</script>
+                <freemarker-context>
+                    <targetDeployed expression="true">delta.previous</targetDeployed>
+                </freemarker-context>
+                <upload-artifacts>false</upload-artifacts>
+            </os-script>
+        </steps>
+    </rule>
+
+    <rule name="tibco.DeployedBwaaAspect.CREATE_MODIFY" scope="deployed">
+        <conditions>
+            <type>tibco.DeployedBwaaAspect</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>50</order>
+                <description expression="true">"Deploy BWWA aspect %s to %s" % (deployed.name, deployed.container.name)</description>
+                <script>tibcobw/bwaa/deploy-aspect</script>
+                <freemarker-context>
+                    <targetDeployed expression="true">delta.deployed</targetDeployed>
+                </freemarker-context>
+                <upload-artifacts>true</upload-artifacts>
+            </os-script>
+        </steps>
+    </rule>
+
+    <rule name="tibco.DeployedBwaaAspect.DESTROY" scope="deployed">
+        <conditions>
+            <type>tibco.DeployedBwaaAspect</type>
+            <operation>DESTROY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>42</order>
+                <description expression="true">"Remove BWAA aspect %s from %s" % (previousDeployed.name, previousDeployed.container.name)</description>
+                <script>tibcobw/bwaa/remove-aspect</script>
+                <freemarker-context>
+                    <targetDeployed expression="true">delta.previous</targetDeployed>
+                </freemarker-context>
+                <upload-artifacts>false</upload-artifacts>
+            </os-script>
+        </steps>
+    </rule>
+
+    <rule name="tibco.DeployedPrependLibrary.CREATE_MODIFY" scope="deployed">
+        <conditions>
+            <type>tibco.DeployedPrependLibrary</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>50</order>
+                <description expression="true">"Deploy prepend library %s to %s" % (deployed.name, deployed.container.name)</description>
+                <script>tibcobw/prepend-lib/deploy-lib</script>
+                <freemarker-context>
+                    <targetDeployed expression="true">delta.deployed</targetDeployed>
+                </freemarker-context>
+                <upload-artifacts>true</upload-artifacts>
+            </os-script>
+        </steps>
+    </rule>
+
+    <rule name="tibco.DeployedPrependLibrary.DESTROY" scope="deployed">
+        <conditions>
+            <type>tibco.DeployedPrependLibrary</type>
+            <operation>DESTROY</operation>
+        </conditions>
+        <steps>
+            <os-script>
+                <order>42</order>
+                <description expression="true">"Remove prepend library %s from %s" % (previousDeployed.name, previousDeployed.container.name)</description>
+                <script>tibcobw/prepend-lib/remove-lib</script>
+                <freemarker-context>
+                    <targetDeployed expression="true">delta.previous</targetDeployed>
+                </freemarker-context>
+                <upload-artifacts>false</upload-artifacts>
+            </os-script>
+        </steps>
+    </rule>
 
     <rule name="tibco.DeployedConfiguration.CREATE_MODIFY" scope="deployed">
         <conditions>
@@ -134,7 +254,7 @@
         <steps>
             <os-script>
                 <order>42</order>
-                <description expression="true">"Destroy queue %s to %s" % (deployed.name, deployed.container.name)</description>
+                <description expression="true">"Destroy queue %s to %s" % (previousDeployed.name, previousDOBeployed.container.name)</description>
                 <script>tibcobw/ems/destroy-resource</script>
                 <freemarker-context>
                     <targetDeployed expression="true">delta.previous</targetDeployed>
@@ -172,7 +292,7 @@
         <steps>
             <os-script>
                 <order>42</order>
-                <description expression="true">"Destroy topic %s to %s" % (deployed.name, deployed.container.name)</description>
+                <description expression="true">"Destroy topic %s to %s" % (previousDeployed.name, previousDeployed.container.name)</description>
                 <script>tibcobw/ems/destroy-resource</script>
                 <freemarker-context>
                     <targetDeployed expression="true">delta.previous</targetDeployed>
