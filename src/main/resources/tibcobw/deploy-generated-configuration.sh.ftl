@@ -14,7 +14,7 @@ TMPXML=$(mktemp /tmp/${targetDeployed.applicationName}-XXXXXXX.xml)
 
 <#if targetDeployed.configurationMap??>
 
-    ${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -export -app ${targetDeployed.applicationName} -out $TMPXML -user ${container.username} -pw ${container.password} -domain ${container.domainPath}
+    ${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -serialize -export -app ${targetDeployed.applicationName} -out $TMPXML -user ${container.username} -pw ${container.password} -domain ${container.domainPath}
 
     TMPFILE=$(mktemp)
 
@@ -175,7 +175,7 @@ xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --t
 	                                     
     </#list>
     echo "===XML configuration has been generated $TMPXML==="
-    ${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -${command} -deployConfig $TMPXML -app ${targetDeployed.applicationName} -user ${container.username} -pw ${container.password} -domain ${container.domainPath} || exit 2
+    ${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -serialize -${command} -deployConfig $TMPXML -app ${targetDeployed.applicationName} -user ${container.username} -pw ${container.password} -domain ${container.domainPath} || exit 2
     
     rm $TMPXML
 
