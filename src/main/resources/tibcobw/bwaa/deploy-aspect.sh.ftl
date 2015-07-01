@@ -7,4 +7,4 @@
 -->
 
 set -x
-cp ${deployed.file.name} ${targetDeployed.container.BwaaAspectPath}/${targetDeployed.aspectName}-aspects.jar
+cp ${deployed.file.path} ${targetDeployed.container.BwaaAspectPath}/${targetDeployed.aspectName}-aspects.jar
