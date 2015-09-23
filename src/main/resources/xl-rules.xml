@@ -26,6 +26,7 @@
                 </freemarker-context>
                 <upload-artifacts>true</upload-artifacts>
             </os-script>
+            <checkpoint/>
             <os-script>
                 <order>75</order>
                 <description expression="true">"Deploy Generated Configuration %s to %s" % (deployed.name, deployed.container.name)</description>
@@ -78,6 +79,7 @@
                 </freemarker-context>
                 <upload-artifacts>false</upload-artifacts>
             </os-script>
+            <checkpoint/>
         </steps>
     </rule>
 
@@ -97,6 +99,7 @@
                 </freemarker-context>
                 <upload-artifacts>true</upload-artifacts>
             </os-script>
+            <checkpoint/>
         </steps>
     </rule>
 
@@ -115,6 +118,7 @@
                 </freemarker-context>
                 <upload-artifacts>false</upload-artifacts>
             </os-script>
+            <checkpoint/>
         </steps>
     </rule>
 
@@ -134,6 +138,7 @@
                 </freemarker-context>
                 <upload-artifacts>true</upload-artifacts>
             </os-script>
+            <checkpoint/>
         </steps>
     </rule>
 
@@ -152,6 +157,7 @@
                 </freemarker-context>
                 <upload-artifacts>false</upload-artifacts>
             </os-script>
+            <checkpoint/>
         </steps>
     </rule>
 
@@ -171,6 +177,7 @@
                 </freemarker-context>
                 <upload-artifacts>true</upload-artifacts>
             </os-script>
+            <checkpoint/>
         </steps>
     </rule>
 
@@ -189,6 +196,7 @@
                 </freemarker-context>
                 <upload-artifacts>false</upload-artifacts>
             </os-script>
+            <checkpoint/>
         </steps>
     </rule>
 
@@ -209,6 +217,7 @@
                 </freemarker-context>
                 <upload-artifacts>false</upload-artifacts>
             </os-script>
+            <checkpoint/>
         </steps>
     </rule>
 
