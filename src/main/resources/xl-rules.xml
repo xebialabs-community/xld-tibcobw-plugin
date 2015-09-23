@@ -65,6 +65,7 @@
         <conditions>
             <type>tibco.DeployedEar</type>
             <operation>DESTROY</operation>
+            <operation>MODIFY</operation>
         </conditions>
         <steps>
             <os-script>
