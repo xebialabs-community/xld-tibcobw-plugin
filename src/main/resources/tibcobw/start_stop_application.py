@@ -30,9 +30,13 @@ def start_step(delta):
         target_host=to_deployed(delta).container.host)
 
 def generate_steps(delta):
+    if to_deployed(delta).startAdapterAfterDeploy:
+        mod = [stop_step(delta), start_step(delta)]
+    else:
+        mod = [stop_step(delta)]
     return {
         Operation.CREATE : [start_step(delta)],
-        Operation.MODIFY : [stop_step(delta), start_step(delta)],
+        Operation.MODIFY : mod,
         Operation.DESTROY: [stop_step(delta)],
         Operation.NOOP:    []
     }.get(delta.operation,"NOT FOUND")
