@@ -60,14 +60,16 @@
 	<property name="configurationMap" kind="map_string_string" required="false" />
         <property name="configurationMapSesure" kind="map_string_string" password="true" required="false" />
 	<property name="configurationMapAdapterSDK" kind="map_string_string" required="false" />
-        <property name="firstNode" kind="ci" referenced-type="tibco.Node" required="true"/>
-        <property name="firstNodeWeight" kind="integer" default="200" required="true"/>
-	<property name="secondNode" kind="ci" referenced-type="tibco.Node" required="false"/>
-        <property name="secondNodeWeight" kind="integer" default="200" required="false"/>
-        <property name="runFaultTolerant" kind="boolean"/>
-        <property name="heartbeatInterval" kind="integer" default="10000" required="true"/>
-        <property name="activationInterval" kind="integer" default="35000" required="true"/>
-        <property name="activationDelay" kind="integer" default="0" required="true"/>
+	<property name="checkpointDataRepository" kind="string" required="true" default="Local File" />
+        <property name="checkpointTablePrefix" kind="string" required="false" />
+        <property name="firstNode" kind="ci" referenced-type="tibco.Node" required="true" category="Fault Tolerant"/>
+        <property name="firstNodeWeight" kind="integer" default="200" required="true" category="Fault Tolerant"/>
+	<property name="secondNode" kind="ci" referenced-type="tibco.Node" required="false" category="Fault Tolerant"/>
+        <property name="secondNodeWeight" kind="integer" default="200" required="false" category="Fault Tolerant"/>
+        <property name="runFaultTolerant" kind="boolean" category="Fault Tolerant"/>
+        <property name="heartbeatInterval" kind="integer" default="10000" required="true" category="Fault Tolerant"/>
+        <property name="activationInterval" kind="integer" default="35000" required="true" category="Fault Tolerant"/>
+        <property name="activationDelay" kind="integer" default="0" required="true" category="Fault Tolerant"/>
 
 
     </type>

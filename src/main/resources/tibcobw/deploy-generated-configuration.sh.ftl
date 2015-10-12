@@ -82,13 +82,24 @@ EOF
 
 <#if targetDeployed.runFaultTolerant>
 
-xmlstarlet ed -L  -u "/_:application/_:services/_:bw/_:isFt" -v "true" $TMPXML
-xmlstarlet ed -L  -a "/_:application/_:services/_:bw/_:isFt" --type elem -n "faultTolerant" $TMPXML
-xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --type elem -n "hbInterval" -v ${targetDeployed.heartbeatInterval} $TMPXML
-xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --type elem -n "activationInterval" -v ${targetDeployed.activationInterval} $TMPXML
-xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --type elem -n "preparationDelay" -v ${targetDeployed.activationDelay} $TMPXML
+    xmlstarlet ed -L  -u "/_:application/_:services/_:bw/_:isFt" -v "true" $TMPXML
+    xmlstarlet ed -L  -a "/_:application/_:services/_:bw/_:isFt" --type elem -n "faultTolerant" $TMPXML
+    xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --type elem -n "hbInterval" -v ${targetDeployed.heartbeatInterval} $TMPXML
+    xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --type elem -n "activationInterval" -v ${targetDeployed.activationInterval} $TMPXML
+    xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --type elem -n "preparationDelay" -v ${targetDeployed.activationDelay} $TMPXML
 
 </#if>
+<#if targetDeployed.checkpointTablePrefix??> 
+    xmlstarlet edit -L -u '/_:application/_:services/_:bw/_:checkpoints/_:tablePrefix' -v '${targetDeployed.checkpointTablePrefix}' $TMPXML
+</#if>
+    xmlstarlet sel -t -v '/_:application/_:services/_:bw/_:checkpoints/_:checkpoint[.="${targetDeployed.checkpointDataRepository}"]' $TMPXML
+    XMLSTARLET_EXIT_CODE=$?
+    if [ $XMLSTARLET_EXIT_CODE -ne 0 ]
+    then
+        echo "[ERROR] checkpointDataRepository is incorrect" >&2
+        exit 5
+    fi
+    xmlstarlet edit -L -u '/_:application/_:services/_:bw/_:checkpoints/@selected' -v '${targetDeployed.checkpointDataRepository}' $TMPXML
 
     xmlstarlet ed -L -d  "/_:application/_:services/_:bw/_:bindings" $TMPXML || exit 1
     xmlstarlet ed -L  --insert "/_:application/_:services/_:bw/_:NVPairs" --type elem -n xi_include \
@@ -105,7 +116,7 @@ xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --t
         XMLSTARLET_EXIT_CODE=$?
         if [ $XMLSTARLET_EXIT_CODE -ne 0 ]
         then
-            echo "[ERROR] xmlstarlet error"i >&2
+            echo "[ERROR] xmlstarlet error" >&2
             exit 2
         fi
         
@@ -143,7 +154,7 @@ xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --t
         XMLSTARLET_EXIT_CODE=$?
         if [ $XMLSTARLET_EXIT_CODE -ne 0 ]
         then
-            echo "[ERROR] xmlstarlet error"i >&2
+            echo "[ERROR] xmlstarlet error" >&2
             exit 2
         fi
         if [ "x$XML_SEL" = "xtrue" ]
