@@ -89,9 +89,11 @@ EOF
     xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --type elem -n "preparationDelay" -v ${targetDeployed.activationDelay} $TMPXML
 
 </#if>
-<#if targetDeployed.checkpointTablePrefix??> 
-    xmlstarlet edit -L -u '/_:application/_:services/_:bw/_:checkpoints/_:tablePrefix' -v '${targetDeployed.checkpointTablePrefix}' $TMPXML
-</#if>
+
+<#if targetDeployed.checkpointDataRepository != "Local File" >
+    <#if targetDeployed.checkpointTablePrefix??> 
+        xmlstarlet edit -L -u '/_:application/_:services/_:bw/_:checkpoints/_:tablePrefix' -v '${targetDeployed.checkpointTablePrefix}' $TMPXML
+    </#if>
     xmlstarlet sel -t -v '/_:application/_:services/_:bw/_:checkpoints/_:checkpoint[.="${targetDeployed.checkpointDataRepository}"]' $TMPXML
     XMLSTARLET_EXIT_CODE=$?
     if [ $XMLSTARLET_EXIT_CODE -ne 0 ]
@@ -100,6 +102,7 @@ EOF
         exit 5
     fi
     xmlstarlet edit -L -u '/_:application/_:services/_:bw/_:checkpoints/@selected' -v '${targetDeployed.checkpointDataRepository}' $TMPXML
+</#if>
 
     xmlstarlet ed -L -d  "/_:application/_:services/_:bw/_:bindings" $TMPXML || exit 1
     xmlstarlet ed -L  --insert "/_:application/_:services/_:bw/_:NVPairs" --type elem -n xi_include \
