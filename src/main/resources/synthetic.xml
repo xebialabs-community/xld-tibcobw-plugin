@@ -62,6 +62,12 @@
 	<property name="configurationMapAdapterSDK" kind="map_string_string" required="false" />
 	<property name="checkpointDataRepository" kind="string" required="true" default="Local File" />
         <property name="checkpointTablePrefix" kind="string" required="false" />
+        <property name="startOnBoot" kind="boolean" default="false"/>
+        <property name="enableVerbose" kind="boolean" default="false"/>
+        <property name="maxLogFileSize" kind="integer" default="20000" required="true" />
+        <property name="maxLogFileCount" kind="integer" default="5" required="true" />
+        <property name="threadCount" kind="integer" default="8" required="true" />
+
         <property name="firstNode" kind="ci" referenced-type="tibco.Node" required="true" category="Fault Tolerant"/>
         <property name="firstNodeWeight" kind="integer" default="200" required="true" category="Fault Tolerant"/>
 	<property name="secondNode" kind="ci" referenced-type="tibco.Node" required="false" category="Fault Tolerant"/>
@@ -70,6 +76,11 @@
         <property name="heartbeatInterval" kind="integer" default="10000" required="true" category="Fault Tolerant"/>
         <property name="activationInterval" kind="integer" default="35000" required="true" category="Fault Tolerant"/>
         <property name="activationDelay" kind="integer" default="0" required="true" category="Fault Tolerant"/>
+
+        <property name="initHeapSize" kind="integer" default="32" required="true" category="JVM" />
+	<property name="maxHeapSize" kind="integer" default="256" required="true" category="JVM" />
+        <property name="threadStackSize" kind="integer" default="256" required="true" category="JVM" />
+        
 
 
     </type>

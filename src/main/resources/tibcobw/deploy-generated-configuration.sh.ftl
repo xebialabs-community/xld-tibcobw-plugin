@@ -28,15 +28,15 @@ TMPXML=$(mktemp /tmp/${targetDeployed.applicationName}-XXXXXXX.xml)
             <location>${targetDeployed.firstNode.path}</location>
         </product>
         <setting>
-            <startOnBoot>false</startOnBoot>
-            <enableVerbose>false</enableVerbose>
-            <maxLogFileSize>20000</maxLogFileSize>
-            <maxLogFileCount>5</maxLogFileCount>
-            <threadCount>8</threadCount>
+            <startOnBoot>${targetDeployed.startOnBoot}</startOnBoot>
+            <enableVerbose>${targetDeployed.enableVerbose}</enableVerbose>
+            <maxLogFileSize>${targetDeployed.maxLogFileSize}</maxLogFileSize>
+            <maxLogFileCount>${targetDeployed.maxLogFileCount}</maxLogFileCount>
+            <threadCount>${targetDeployed.threadCount}</threadCount>
             <java>
-                <initHeapSize>32</initHeapSize>
-                <maxHeapSize>256</maxHeapSize>
-                <threadStackSize>256</threadStackSize>
+                <initHeapSize>${targetDeployed.initHeapSize}</initHeapSize>
+                <maxHeapSize>${targetDeployed.maxHeapSize}</maxHeapSize>
+                <threadStackSize>${targetDeployed.threadStackSize}</threadStackSize>
             </java>
         </setting>
         <ftWeight>${targetDeployed.firstNodeWeight}</ftWeight>
@@ -56,15 +56,15 @@ TMPXML=$(mktemp /tmp/${targetDeployed.applicationName}-XXXXXXX.xml)
             <location>${targetDeployed.secondNode.path}</location>
         </product>
         <setting>
-            <startOnBoot>false</startOnBoot>
-            <enableVerbose>false</enableVerbose>
-            <maxLogFileSize>20000</maxLogFileSize>
-            <maxLogFileCount>5</maxLogFileCount>
-            <threadCount>8</threadCount>
+            <startOnBoot>${targetDeployed.startOnBoot}</startOnBoot>
+            <enableVerbose>${targetDeployed.enableVerbose}</enableVerbose>
+            <maxLogFileSize>${targetDeployed.maxLogFileSize}</maxLogFileSize>
+            <maxLogFileCount>${targetDeployed.maxLogFileCount}</maxLogFileCount>
+            <threadCount>${targetDeployed.threadCount}</threadCount>
             <java>
-                <initHeapSize>32</initHeapSize>
-                <maxHeapSize>256</maxHeapSize>
-                <threadStackSize>256</threadStackSize>
+                <initHeapSize>${targetDeployed.initHeapSize}</initHeapSize>
+                <maxHeapSize>${targetDeployed.maxHeapSize}</maxHeapSize>
+                <threadStackSize>${targetDeployed.threadStackSize}</threadStackSize>
             </java>
         </setting>
         <ftWeight>${targetDeployed.secondNodeWeight}</ftWeight>
