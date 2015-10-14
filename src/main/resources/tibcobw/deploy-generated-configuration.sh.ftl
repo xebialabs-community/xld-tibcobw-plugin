@@ -28,8 +28,8 @@ TMPXML=$(mktemp /tmp/${targetDeployed.applicationName}-XXXXXXX.xml)
             <location>${targetDeployed.firstNode.path}</location>
         </product>
         <setting>
-            <startOnBoot>${targetDeployed.startOnBoot}</startOnBoot>
-            <enableVerbose>${targetDeployed.enableVerbose}</enableVerbose>
+            <startOnBoot>${targetDeployed.startOnBoot?string}</startOnBoot>
+            <enableVerbose>${targetDeployed.enableVerbose?string}</enableVerbose>
             <maxLogFileSize>${targetDeployed.maxLogFileSize}</maxLogFileSize>
             <maxLogFileCount>${targetDeployed.maxLogFileCount}</maxLogFileCount>
             <threadCount>${targetDeployed.threadCount}</threadCount>
@@ -56,8 +56,8 @@ TMPXML=$(mktemp /tmp/${targetDeployed.applicationName}-XXXXXXX.xml)
             <location>${targetDeployed.secondNode.path}</location>
         </product>
         <setting>
-            <startOnBoot>${targetDeployed.startOnBoot}</startOnBoot>
-            <enableVerbose>${targetDeployed.enableVerbose}</enableVerbose>
+            <startOnBoot>${targetDeployed.startOnBoot?string}</startOnBoot>
+            <enableVerbose>${targetDeployed.enableVerbose?string}</enableVerbose>
             <maxLogFileSize>${targetDeployed.maxLogFileSize}</maxLogFileSize>
             <maxLogFileCount>${targetDeployed.maxLogFileCount}</maxLogFileCount>
             <threadCount>${targetDeployed.threadCount}</threadCount>
@@ -189,7 +189,7 @@ EOF
 	                                     
     </#list>
     echo "===XML configuration has been generated $TMPXML==="
-    ${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -serialize -${command} -deployConfig $TMPXML -app ${targetDeployed.applicationName} -user ${container.username} -pw ${container.password} -domain ${container.domainPath} || exit 2
+    ${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -serialize -${command} -deployConfig $TMPXML -app ${targetDeployed.applicationName} -user ${container.username} -pw ${container.password} -domain ${container.domainPath} -nostart || exit 2
     
     rm $TMPXML
 

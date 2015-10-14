@@ -26,6 +26,7 @@
     <type type="tibco.Node" extends="generic.Container">
         <property name="host" kind="ci" referenced-type="overthere.Host" as-containment="true"/>
         <property name="path" default="/opt/tibco/bw/5.11" />
+        <property name="traPath" default="/opt/tibco/tra"/>
         <property name="version" default="5.11" />
         <property name="BwaaLibraryPath" default="/opt/tibco/bw/plugins/bwaa/lib"/>
         <property name="BwaaAspectPath" default="/opt/tibco/bw/plugins/bwaa/aspects"/>
@@ -80,6 +81,18 @@
         <property name="initHeapSize" kind="integer" default="32" required="true" category="JVM" />
 	<property name="maxHeapSize" kind="integer" default="256" required="true" category="JVM" />
         <property name="threadStackSize" kind="integer" default="256" required="true" category="JVM" />
+
+
+        <property name="javaAgent" kind="string" required="false" category="Extended properties"/>
+        <property name="agentPath" kind="string" required="false" category="Extended properties"/>
+        <property name="HeapDumpOnOutOfMemoryError" kind="boolean" required="false" category="Extended properties"/>
+        <property name="HeapDumpPath" kind="string" required="false" default="/var/jdump" category="Extended properties"/>
+        <property name="loggc" kind="boolean" required="false" category="Extended properties"/>
+	<property name="loggcPath" kind="string" required="false" default="/var/log/tibco" category="Extended properties"/>
+        <property name="UseGCLogFileRotation" kind="boolean" required="false" category="Extended properties"/>
+        <property name="NumberOfGCLogFiles" kind="integer" default="5" required="false" category="Extended properties"/>
+        <property name="GCLogFileSize" kind="string" default="50M" required="false" category="Extended properties"/>
+        <property name="MiscExtProperties" kind="string" required="false" category="Extended properties"/>
         
 
 
