@@ -82,7 +82,7 @@
 	<property name="maxHeapSize" kind="integer" default="256" required="true" category="JVM" />
         <property name="threadStackSize" kind="integer" default="256" required="true" category="JVM" />
 
-
+        <property name="MaxPermSize" kind="integer" required="false" description="in megabytes, empty for default" category="Extended properties"/>
         <property name="javaAgent" kind="string" required="false" category="Extended properties"/>
         <property name="agentPath" kind="string" required="false" category="Extended properties"/>
         <property name="HeapDumpOnOutOfMemoryError" kind="boolean" required="false" category="Extended properties"/>
@@ -91,8 +91,8 @@
 	<property name="loggcPath" kind="string" required="false" default="/var/log/tibco" category="Extended properties"/>
         <property name="UseGCLogFileRotation" kind="boolean" required="false" category="Extended properties"/>
         <property name="NumberOfGCLogFiles" kind="integer" default="5" required="false" category="Extended properties"/>
-        <property name="GCLogFileSize" kind="string" default="50M" required="false" category="Extended properties"/>
-        <property name="MiscExtProperties" kind="string" required="false" category="Extended properties"/>
+        <property name="GCLogFileSize" kind="integer" default="50" required="false" description="in megabytes" category="Extended properties"/>
+        <property name="MiscExtProperties" kind="string" required="false" description=": and = should be escaped with \\ (i.e. \\: and \\= )" category="Extended properties"/>
         
 
 
