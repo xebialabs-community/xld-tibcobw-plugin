@@ -11,6 +11,11 @@ The Tibco Business Work plugin is a XL Deploy plugin that adds capability for de
 * a Tibco Ear to a Tibco domain and its XML configuration
 * a queue, a topic and an EMS Script on a EMS Server
 
+# What's new in version 1.2.0 #
+
+* Fix bugs regarding libs deploy
+* Add parameters for JVM configuration
+
 
 # What's new in version 1.1.0 #
 
@@ -78,6 +83,7 @@ And I can set different values to `bw.platform.services.retreiveresources.Httppo
 * **XL Deploy requirements**
 	* **XLD**: version 4.5.1+
 * The containers with tibco.Domain object should have xmllint and xmlstarlet tools
+* Passwordless SSH access from Tibco Domain node to Tibco BW nodes.
 
 ## Types ##
 

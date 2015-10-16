@@ -83,8 +83,8 @@
         <property name="threadStackSize" kind="integer" default="256" required="true" category="JVM" />
 
         <property name="MaxPermSize" kind="integer" required="false" description="in megabytes, empty for default" category="Extended properties"/>
-        <property name="javaAgent" kind="string" required="false" category="Extended properties"/>
-        <property name="agentPath" kind="string" required="false" category="Extended properties"/>
+        <property name="javaAgent" kind="string" required="false" description="Path to JAR file , for exmaple/opt/tibco/instr/instr.jar" category="Extended properties"/>
+        <property name="agentPath" kind="string" required="false" description=": and = should be escaped with \\ , for example /opt/yourkit-agent/libyjpagent.so\=delay\=10000,telemetrylimit\=2" category="Extended properties"/>
         <property name="HeapDumpOnOutOfMemoryError" kind="boolean" required="false" category="Extended properties"/>
         <property name="HeapDumpPath" kind="string" required="false" default="/var/jdump" category="Extended properties"/>
         <property name="loggc" kind="boolean" required="false" category="Extended properties"/>
