@@ -82,6 +82,8 @@
 	<property name="maxHeapSize" kind="integer" default="256" required="true" category="JVM" />
         <property name="threadStackSize" kind="integer" default="256" required="true" category="JVM" />
 
+        
+        <property name="jmxRemotePort" kind="integer" required="false" category="Extended properties" />
         <property name="MaxPermSize" kind="integer" required="false" description="in megabytes, empty for default" category="Extended properties"/>
         <property name="javaAgent" kind="string" required="false" description="Path to JAR file , for exmaple/opt/tibco/instr/instr.jar" category="Extended properties"/>
         <property name="agentPath" kind="string" required="false" description=": and = should be escaped with \\ , for example /opt/yourkit-agent/libyjpagent.so\=delay\=10000,telemetrylimit\=2" category="Extended properties"/>

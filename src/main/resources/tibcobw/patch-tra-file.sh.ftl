@@ -7,6 +7,7 @@
 -->
 
 
+set -e 
 
 export EXT_OPTS="<#if targetDeployed.javaAgent??>-javaagent\\:${targetDeployed.javaAgent} </#if>\
 <#if targetDeployed.agentPath??>-agentpath\\:${targetDeployed.agentPath} </#if>\
@@ -19,8 +20,18 @@ EXT_OPTS=$(echo $EXT_OPTS | sed 's/ +$//')
 
 echo EXT_OPTS=$EXT_OPTS
 
-export SSH_CMD="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
-echo "java.extended.properties=$EXT_OPTS" | $SSH_CMD ${targetDeployed.firstNode.host.address} "cat >> ${targetDeployed.firstNode.traPath}/domain/${targetDeployed.container.domainPath}/application/${targetDeployed.applicationName}-modified/${targetDeployed.applicationName}-modified-Process_Archive*.tra "
+export SSH_CMD="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o BatchMode=yes"
+
+if [ -n "$EXT_OPTS" ]; then
+   echo "java.extended.properties=$EXT_OPTS" | $SSH_CMD ${targetDeployed.firstNode.host.address} "cat >> ${targetDeployed.firstNode.traPath}/domain/${targetDeployed.container.domainPath}/application/${targetDeployed.applicationName}-modified/${targetDeployed.applicationName}-modified-Process_Archive*.tra "
+   <#if targetDeployed.secondNode??>
+   echo "java.extended.properties=$EXT_OPTS" | $SSH_CMD ${targetDeployed.secondNode.host.address} "cat >> ${targetDeployed.secondNode.traPath}/domain/${targetDeployed.container.domainPath}/application/${targetDeployed.applicationName}-modified/${targetDeployed.applicationName}-modified-Process_Archive*.tra "
+   </#if>
+fi
+
+<#if targetDeployed.jmxRemotePort??>
+echo "jmxremote.port=${targetDeployed.jmxRemotePort}" | $SSH_CMD ${targetDeployed.firstNode.host.address} "cat >> ${targetDeployed.firstNode.traPath}/domain/${targetDeployed.container.domainPath}/application/${targetDeployed.applicationName}-modified/${targetDeployed.applicationName}-modified-Process_Archive*.tra "
 <#if targetDeployed.secondNode??>
-echo "java.extended.properties=$EXT_OPTS" | $SSH_CMD ${targetDeployed.secondNode.host.address} "cat >> ${targetDeployed.secondNode.traPath}/domain/${targetDeployed.container.domainPath}/application/${targetDeployed.applicationName}-modified/${targetDeployed.applicationName}-modified-Process_Archive*.tra "
+echo "jmxremote.port=${targetDeployed.jmxRemotePort}" | $SSH_CMD ${targetDeployed.secondNode.host.address} "cat >> ${targetDeployed.secondNode.traPath}/domain/${targetDeployed.container.domainPath}/application/${targetDeployed.applicationName}-modified/${targetDeployed.applicationName}-modified-Process_Archive*.tra "
+</#if>
 </#if>
