@@ -24,8 +24,8 @@ TMPXML=$(mktemp /tmp/${targetDeployed.applicationName}-XXXXXXX.xml)
         <machine>${targetDeployed.firstNode.host.address}</machine>
         <product>
             <type>BW</type>
-            <version>${targetDeployed.firstNode.version}</version>
-            <location>${targetDeployed.firstNode.path}</location>
+            <version>${targetDeployed.firstNode.bwVersion}</version>
+            <location>${targetDeployed.firstNode.bwPath}/${targetDeployed.firstNode.bwVersion}</location>
         </product>
         <setting>
             <startOnBoot>${targetDeployed.startOnBoot?string}</startOnBoot>
@@ -52,8 +52,8 @@ TMPXML=$(mktemp /tmp/${targetDeployed.applicationName}-XXXXXXX.xml)
         <machine>${targetDeployed.secondNode.host.address}</machine>
         <product>
             <type>BW</type>
-            <version>${targetDeployed.secondNode.version}</version>
-            <location>${targetDeployed.secondNode.path}</location>
+            <version>${targetDeployed.secondNode.bwVersion}</version>
+            <location>${targetDeployed.secondNode.bwPath}/{targetDeployed.secondNode.bwVersion}</location>
         </product>
         <setting>
             <startOnBoot>${targetDeployed.startOnBoot?string}</startOnBoot>

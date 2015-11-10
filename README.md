@@ -82,8 +82,7 @@ And I can set different values to `bw.platform.services.retreiveresources.Httppo
 
 * **XL Deploy requirements**
 	* **XLD**: version 4.5.1+
-* The containers with tibco.Domain object should have xmllint and xmlstarlet tools
-* Passwordless SSH access from Tibco Domain node to Tibco BW nodes.
+* The containers with tibco.Domain and tibco.Node objects should have xmllint and xmlstarlet tools
 
 ## Types ##
 

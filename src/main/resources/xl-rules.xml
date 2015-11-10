@@ -37,17 +37,6 @@
                 </freemarker-context>
                 <upload-artifacts>false</upload-artifacts>
             </os-script>
-            <os-script>
-                <order>78</order>
-                <description expression="true">"Patch TRA file for %s" % (deployed.name)</description>
-                <script>tibcobw/patch-tra-file</script>
-                <freemarker-context>
-                    <targetDeployed expression="true">delta.deployed</targetDeployed>
-                    <command>deploy</command>
-                </freemarker-context>
-                <upload-artifacts>false</upload-artifacts>
-            </os-script>
-
         </steps>
     </rule>
 
@@ -328,6 +317,14 @@
         <planning-script-path>tibcobw/start_stop_application.py</planning-script-path>
     </rule>
 
+    <rule name="tibco.node.patch_tra" scope="deployed">
+        <conditions>
+            <type>tibco.DeployedEar</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <planning-script-path>tibcobw/patch_tra.py</planning-script-path>
+    </rule>
 
 </rules>
 
