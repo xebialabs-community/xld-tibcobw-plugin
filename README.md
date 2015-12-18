@@ -14,7 +14,9 @@ The Tibco Business Work plugin is a XL Deploy plugin that adds capability for de
 # What's new in version 1.2.0 #
 
 * Fix bugs regarding libs deploy
-* Add parameters for JVM configuration
+* Add parameters for adapter JVM configuration (JVM tab)
+* Add parameters for extended properties configuration (Extended properties tab)
+* Fault tolerant and clustering deploy options moved to Fault taulernt tab
 
 
 # What's new in version 1.1.0 #
@@ -28,6 +30,25 @@ The Tibco Business Work plugin is a XL Deploy plugin that adds capability for de
 
 tibco.Domain type has been splitted to new version of tibco.Domain and tibco.Node type. You should create and configure tibco.Node object within container with tibco.Domain object.
 
+# Extended properties
+
+Extended properties tab allows to set java.extended.properties, Jmx.Enabled and other properties inside TRA-file.
+
+`Tra Map` parameter can be used to set any other properties. For example you need to enable jmxremote by adding following strings into TRA file
+
+```
+Jmx.Enabled=true
+java.property.com.sun.management.jmxremote=true
+java.property.com.sun.management.jmxremote.authenticate=false
+java.property.com.sun.management.jmxremote.ssl=false
+java.property.java.rmi.server.useLocalHostname=true
+java.property.com.sun.management.jmxremote.port=55555
+```
+
+You should check `Jmx Enable` checkbox and add `java.property..` strings to Tra Map. Tra Map parameters also can be filled from dictionary. Key `tibco.DeployedEar.TraMap` should have value  `java.property.com.sun.management.jmxremote:true, java.property.com.sun.management.jmxremote.authenticate:false, java.property.com.sun.management.jmxremote.ssl:false, java.property.java.rmi.server.useLocalHostname:true, java.property.com.sun.management.jmxremote.port:55555`
+
+in one string.
+
 # Howto use dictionary to set variables within a Tibco artifact file
 
 The tibco.Ear artifact should be created with configurationMap and configurationMapAdapterSDK properties
@@ -38,7 +59,7 @@ For example I'm using [Jenkins XLD plugin](https://wiki.jenkins-ci.org/display/J
 1. First step is a bash script
     ```bash
 jar xvf ${ADAPTER}-${VERSION}*.ear
-PLACEHOLDERS=$(xmlstarlet sel -N _=http://www.tibco.com/xmlns/dd \ 
+PLACEHOLDERS=$(xmlstarlet sel -N _=http://www.tibco.com/xmlns/dd \
     -t -v '/_:DeploymentDescriptors/_:NameValuePairs/_:*[_:requiresConfiguration="true"]/_:name' TIBCO.xml | xargs)
 jar xvf Process\ Archive.par
 SDK_PLACEHOLDERS=$(xmlstarlet sel -N _=http://www.tibco.com/xmlns/dd \
@@ -103,5 +124,3 @@ And I can set different values to `bw.platform.services.retreiveresources.Httppo
 This is below a typical computed task by the Tibco Business Work plugin during an upgrade.
 
 ![Deployment task](update-task.png)
-
-
