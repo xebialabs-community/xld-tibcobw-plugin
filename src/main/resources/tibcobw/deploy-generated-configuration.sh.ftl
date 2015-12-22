@@ -14,7 +14,7 @@ TMPXML=$(mktemp /tmp/${targetDeployed.applicationName}-XXXXXXX.xml)
 
 <#if targetDeployed.configurationMap??>
 
-    ${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -export -app ${targetDeployed.applicationName} -out $TMPXML -user ${container.username} -pw ${container.password} -domain ${container.domainPath}
+    ${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -serialize -export -app ${targetDeployed.applicationName} -out $TMPXML -user ${container.username} -pw ${container.password} -domain ${container.domainPath}
 
     TMPFILE=$(mktemp)
 
@@ -24,19 +24,19 @@ TMPXML=$(mktemp /tmp/${targetDeployed.applicationName}-XXXXXXX.xml)
         <machine>${targetDeployed.firstNode.host.address}</machine>
         <product>
             <type>BW</type>
-            <version>${targetDeployed.firstNode.version}</version>
-            <location>${targetDeployed.firstNode.path}</location>
+            <version>${targetDeployed.firstNode.bwVersion}</version>
+            <location>${targetDeployed.firstNode.bwPath}/${targetDeployed.firstNode.bwVersion}</location>
         </product>
         <setting>
-            <startOnBoot>false</startOnBoot>
-            <enableVerbose>false</enableVerbose>
-            <maxLogFileSize>20000</maxLogFileSize>
-            <maxLogFileCount>5</maxLogFileCount>
-            <threadCount>8</threadCount>
+            <startOnBoot>${targetDeployed.startOnBoot?string}</startOnBoot>
+            <enableVerbose>${targetDeployed.enableVerbose?string}</enableVerbose>
+            <maxLogFileSize>${targetDeployed.maxLogFileSize}</maxLogFileSize>
+            <maxLogFileCount>${targetDeployed.maxLogFileCount}</maxLogFileCount>
+            <threadCount>${targetDeployed.threadCount}</threadCount>
             <java>
-                <initHeapSize>32</initHeapSize>
-                <maxHeapSize>256</maxHeapSize>
-                <threadStackSize>256</threadStackSize>
+                <initHeapSize>${targetDeployed.initHeapSize}</initHeapSize>
+                <maxHeapSize>${targetDeployed.maxHeapSize}</maxHeapSize>
+                <threadStackSize>${targetDeployed.threadStackSize}</threadStackSize>
             </java>
         </setting>
         <ftWeight>${targetDeployed.firstNodeWeight}</ftWeight>
@@ -52,19 +52,19 @@ TMPXML=$(mktemp /tmp/${targetDeployed.applicationName}-XXXXXXX.xml)
         <machine>${targetDeployed.secondNode.host.address}</machine>
         <product>
             <type>BW</type>
-            <version>${targetDeployed.secondNode.version}</version>
-            <location>${targetDeployed.secondNode.path}</location>
+            <version>${targetDeployed.secondNode.bwVersion}</version>
+            <location>${targetDeployed.secondNode.bwPath}/{targetDeployed.secondNode.bwVersion}</location>
         </product>
         <setting>
-            <startOnBoot>false</startOnBoot>
-            <enableVerbose>false</enableVerbose>
-            <maxLogFileSize>20000</maxLogFileSize>
-            <maxLogFileCount>5</maxLogFileCount>
-            <threadCount>8</threadCount>
+            <startOnBoot>${targetDeployed.startOnBoot?string}</startOnBoot>
+            <enableVerbose>${targetDeployed.enableVerbose?string}</enableVerbose>
+            <maxLogFileSize>${targetDeployed.maxLogFileSize}</maxLogFileSize>
+            <maxLogFileCount>${targetDeployed.maxLogFileCount}</maxLogFileCount>
+            <threadCount>${targetDeployed.threadCount}</threadCount>
             <java>
-                <initHeapSize>32</initHeapSize>
-                <maxHeapSize>256</maxHeapSize>
-                <threadStackSize>256</threadStackSize>
+                <initHeapSize>${targetDeployed.initHeapSize}</initHeapSize>
+                <maxHeapSize>${targetDeployed.maxHeapSize}</maxHeapSize>
+                <threadStackSize>${targetDeployed.threadStackSize}</threadStackSize>
             </java>
         </setting>
         <ftWeight>${targetDeployed.secondNodeWeight}</ftWeight>
@@ -82,12 +82,26 @@ EOF
 
 <#if targetDeployed.runFaultTolerant>
 
-xmlstarlet ed -L  -u "/_:application/_:services/_:bw/_:isFt" -v "true" $TMPXML
-xmlstarlet ed -L  -a "/_:application/_:services/_:bw/_:isFt" --type elem -n "faultTolerant" $TMPXML
-xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --type elem -n "hbInterval" -v ${targetDeployed.heartbeatInterval} $TMPXML
-xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --type elem -n "activationInterval" -v ${targetDeployed.activationInterval} $TMPXML
-xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --type elem -n "preparationDelay" -v ${targetDeployed.activationDelay} $TMPXML
+    xmlstarlet ed -L  -u "/_:application/_:services/_:bw/_:isFt" -v "true" $TMPXML
+    xmlstarlet ed -L  -a "/_:application/_:services/_:bw/_:isFt" --type elem -n "faultTolerant" $TMPXML
+    xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --type elem -n "hbInterval" -v ${targetDeployed.heartbeatInterval} $TMPXML
+    xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --type elem -n "activationInterval" -v ${targetDeployed.activationInterval} $TMPXML
+    xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --type elem -n "preparationDelay" -v ${targetDeployed.activationDelay} $TMPXML
 
+</#if>
+
+<#if targetDeployed.checkpointDataRepository != "Local File" >
+    <#if targetDeployed.checkpointTablePrefix??> 
+        xmlstarlet edit -L -u '/_:application/_:services/_:bw/_:checkpoints/_:tablePrefix' -v '${targetDeployed.checkpointTablePrefix}' $TMPXML
+    </#if>
+    xmlstarlet sel -t -v '/_:application/_:services/_:bw/_:checkpoints/_:checkpoint[.="${targetDeployed.checkpointDataRepository}"]' $TMPXML
+    XMLSTARLET_EXIT_CODE=$?
+    if [ $XMLSTARLET_EXIT_CODE -ne 0 ]
+    then
+        echo "[ERROR] checkpointDataRepository is incorrect" >&2
+        exit 5
+    fi
+    xmlstarlet edit -L -u '/_:application/_:services/_:bw/_:checkpoints/@selected' -v '${targetDeployed.checkpointDataRepository}' $TMPXML
 </#if>
 
     xmlstarlet ed -L -d  "/_:application/_:services/_:bw/_:bindings" $TMPXML || exit 1
@@ -105,7 +119,7 @@ xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --t
         XMLSTARLET_EXIT_CODE=$?
         if [ $XMLSTARLET_EXIT_CODE -ne 0 ]
         then
-            echo "[ERROR] xmlstarlet error"i >&2
+            echo "[ERROR] xmlstarlet error" >&2
             exit 2
         fi
         
@@ -143,7 +157,7 @@ xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --t
         XMLSTARLET_EXIT_CODE=$?
         if [ $XMLSTARLET_EXIT_CODE -ne 0 ]
         then
-            echo "[ERROR] xmlstarlet error"i >&2
+            echo "[ERROR] xmlstarlet error" >&2
             exit 2
         fi
         if [ "x$XML_SEL" = "xtrue" ]
@@ -175,7 +189,7 @@ xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw/_:faultTolerant" --t
 	                                     
     </#list>
     echo "===XML configuration has been generated $TMPXML==="
-    ${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -${command} -deployConfig $TMPXML -app ${targetDeployed.applicationName} -user ${container.username} -pw ${container.password} -domain ${container.domainPath} || exit 2
+    ${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -serialize -${command} -deployConfig $TMPXML -app ${targetDeployed.applicationName} -user ${container.username} -pw ${container.password} -domain ${container.domainPath} -nostart || exit 2
     
     rm $TMPXML
 

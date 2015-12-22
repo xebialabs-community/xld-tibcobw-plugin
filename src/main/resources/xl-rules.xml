@@ -26,6 +26,7 @@
                 </freemarker-context>
                 <upload-artifacts>true</upload-artifacts>
             </os-script>
+            <checkpoint/>
             <os-script>
                 <order>75</order>
                 <description expression="true">"Deploy Generated Configuration %s to %s" % (deployed.name, deployed.container.name)</description>
@@ -65,6 +66,7 @@
         <conditions>
             <type>tibco.DeployedEar</type>
             <operation>DESTROY</operation>
+            <operation>MODIFY</operation>
         </conditions>
         <steps>
             <os-script>
@@ -77,6 +79,7 @@
                 </freemarker-context>
                 <upload-artifacts>false</upload-artifacts>
             </os-script>
+            <checkpoint/>
         </steps>
     </rule>
 
@@ -96,6 +99,7 @@
                 </freemarker-context>
                 <upload-artifacts>true</upload-artifacts>
             </os-script>
+            <checkpoint/>
         </steps>
     </rule>
 
@@ -114,6 +118,7 @@
                 </freemarker-context>
                 <upload-artifacts>false</upload-artifacts>
             </os-script>
+            <checkpoint/>
         </steps>
     </rule>
 
@@ -133,6 +138,7 @@
                 </freemarker-context>
                 <upload-artifacts>true</upload-artifacts>
             </os-script>
+            <checkpoint/>
         </steps>
     </rule>
 
@@ -151,6 +157,7 @@
                 </freemarker-context>
                 <upload-artifacts>false</upload-artifacts>
             </os-script>
+            <checkpoint/>
         </steps>
     </rule>
 
@@ -170,6 +177,7 @@
                 </freemarker-context>
                 <upload-artifacts>true</upload-artifacts>
             </os-script>
+            <checkpoint/>
         </steps>
     </rule>
 
@@ -188,6 +196,7 @@
                 </freemarker-context>
                 <upload-artifacts>false</upload-artifacts>
             </os-script>
+            <checkpoint/>
         </steps>
     </rule>
 
@@ -208,6 +217,7 @@
                 </freemarker-context>
                 <upload-artifacts>false</upload-artifacts>
             </os-script>
+            <checkpoint/>
         </steps>
     </rule>
 
@@ -307,6 +317,14 @@
         <planning-script-path>tibcobw/start_stop_application.py</planning-script-path>
     </rule>
 
+    <rule name="tibco.node.patch_tra" scope="deployed">
+        <conditions>
+            <type>tibco.DeployedEar</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <planning-script-path>tibcobw/patch_tra.py</planning-script-path>
+    </rule>
 
 </rules>
 

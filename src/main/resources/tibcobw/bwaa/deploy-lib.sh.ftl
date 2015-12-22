@@ -8,4 +8,4 @@
 
 
 set -x
-cp ${deployed.file.name} ${targetDeployed.container.BwaaLibraryPath}/${targetDeployed.aspectName}.jar
+cp ${deployed.file.path} ${targetDeployed.container.BwaaLibraryPath}/${targetDeployed.aspectName}.jar

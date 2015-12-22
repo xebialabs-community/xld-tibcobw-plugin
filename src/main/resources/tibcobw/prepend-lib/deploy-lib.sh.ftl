@@ -8,4 +8,4 @@
 
 
 set -x
-cp ${deployed.file.name} ${targetDeployed.container.PrependLibsPath}/${targetDeployed.libraryName}
+cp ${deployed.file.path} ${targetDeployed.container.PrependLibsPath}/${targetDeployed.libraryName}

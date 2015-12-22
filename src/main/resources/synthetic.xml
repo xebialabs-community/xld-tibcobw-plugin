@@ -25,8 +25,10 @@
 
     <type type="tibco.Node" extends="generic.Container">
         <property name="host" kind="ci" referenced-type="overthere.Host" as-containment="true"/>
-        <property name="path" default="/opt/tibco/bw/5.11" />
-        <property name="version" default="5.11" />
+        <property name="bwPath" default="/opt/tibco/bw/" />
+        <property name="bwVersion" default="5.11" />
+        <property name="traPath" default="/opt/tibco/tra/"/>
+        <property name="traVersion" default="5.8" />
         <property name="BwaaLibraryPath" default="/opt/tibco/bw/plugins/bwaa/lib"/>
         <property name="BwaaAspectPath" default="/opt/tibco/bw/plugins/bwaa/aspects"/>
         <property name="PrependLibsPath" default="/opt/tibco/external_libs"/>
@@ -56,26 +58,50 @@
     <type type="tibco.DeployedEar" extends="udm.BaseDeployedArtifact" deployable-type="tibco.Ear" container-type="tibco.Domain">
         <generate-deployable type="tibco.Ear" extends="udm.BaseDeployableFileArtifact"/>
         <property name="applicationName"/>
-	<property name="configurationMap" kind="map_string_string" required="false" />
+        <property name="startAdapterAfterDeploy" kind="boolean" default="true"/>
+        <property name="configurationMap" kind="map_string_string" required="false" />
         <property name="configurationMapSesure" kind="map_string_string" password="true" required="false" />
-	<property name="configurationMapAdapterSDK" kind="map_string_string" required="false" />
-        <property name="firstNode" kind="ci" referenced-type="tibco.Node" required="true"/>
-        <property name="firstNodeWeight" kind="integer" default="200" required="true"/>
-	<property name="secondNode" kind="ci" referenced-type="tibco.Node" required="false"/>
-        <property name="secondNodeWeight" kind="integer" default="200" required="false"/>
-        <property name="runFaultTolerant" kind="boolean"/>
-        <property name="heartbeatInterval" kind="integer" default="10000" required="true"/>
-        <property name="activationInterval" kind="integer" default="35000" required="true"/>
-        <property name="activationDelay" kind="integer" default="0" required="true"/>
+        <property name="configurationMapAdapterSDK" kind="map_string_string" required="false" />
+        <property name="checkpointDataRepository" kind="string" required="true" default="Local File" />
+        <property name="checkpointTablePrefix" kind="string" required="false" />
+        <property name="startOnBoot" kind="boolean" default="false"/>
+        <property name="enableVerbose" kind="boolean" default="false"/>
+        <property name="maxLogFileSize" kind="integer" default="20000" required="true" />
+        <property name="maxLogFileCount" kind="integer" default="5" required="true" />
+        <property name="threadCount" kind="integer" default="8" required="true" />
 
+        <property name="firstNode" kind="ci" referenced-type="tibco.Node" required="true" category="Fault Tolerant"/>
+        <property name="firstNodeWeight" kind="integer" default="200" required="true" category="Fault Tolerant"/>
+        <property name="secondNode" kind="ci" referenced-type="tibco.Node" required="false" category="Fault Tolerant"/>
+        <property name="secondNodeWeight" kind="integer" default="200" required="false" category="Fault Tolerant"/>
+        <property name="runFaultTolerant" kind="boolean" category="Fault Tolerant"/>
+        <property name="heartbeatInterval" kind="integer" default="10000" required="true" category="Fault Tolerant"/>
+        <property name="activationInterval" kind="integer" default="35000" required="true" category="Fault Tolerant"/>
+        <property name="activationDelay" kind="integer" default="0" required="true" category="Fault Tolerant"/>
 
+        <property name="initHeapSize" kind="integer" default="32" required="true" category="JVM" />
+        <property name="maxHeapSize" kind="integer" default="256" required="true" category="JVM" />
+        <property name="threadStackSize" kind="integer" default="256" required="true" category="JVM" />
+
+        <property name="MaxPermSize" kind="integer" required="false" description="in megabytes, empty for default" category="Extended properties"/>
+        <property name="javaAgent" kind="list_of_string" required="false" description="Path to JAR file, for exmaple /opt/tibco/instr/instr.jar" category="Extended properties"/>
+        <property name="agentPath" kind="list_of_string" required="false" description="For example /opt/yourkit-agent/libyjpagent.so\=delay\=10000,telemetrylimit\=2" category="Extended properties"/>
+        <property name="HeapDumpOnOutOfMemoryError" kind="boolean" required="false" category="Extended properties"/>
+        <property name="HeapDumpPath" kind="string" required="false" default="/var/jdump" category="Extended properties"/>
+        <property name="loggc" kind="boolean" required="false" category="Extended properties"/>
+        <property name="loggcPath" kind="string" required="false" default="/var/log/tibco" category="Extended properties"/>
+        <property name="UseGCLogFileRotation" kind="boolean" required="false" category="Extended properties"/>
+        <property name="NumberOfGCLogFiles" kind="integer" default="5" required="false" category="Extended properties"/>
+        <property name="GCLogFileSize" kind="integer" default="50" required="false" description="in megabytes" category="Extended properties"/>
+        <property name="MiscExtProperties" kind="string" required="false" description="For example -XX:+UseConcMarkSweepGC -XX:+CMSIncrementalMode" category="Extended properties"/>
+        <property name="JmxEnabled" kind="boolean" default="true" category="Extended properties"/>
+        <property name="TraMap" kind="map_string_string" required="false" description="TRA-file additional properties" category="Extended properties"/>
     </type>
 
     <!-- Deploy EAR Configuration files -->
     <type type="tibco.DeployedConfiguration" extends="udm.BaseDeployedArtifact" deployable-type="tibco.Configuration" container-type="tibco.Domain">
         <generate-deployable type="tibco.Configuration" extends="udm.BaseDeployableFileArtifact"/>
         <property name="applicationName"/>
-        
     </type>
 
     <!-- Deploy prepend libraries -->

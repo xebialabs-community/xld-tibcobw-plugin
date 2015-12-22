@@ -11,4 +11,4 @@ set -e
 <#assign container=targetDeployed.container />
 <#assign traHome="${container.tibcoHome}/tra/${container.version}"/>
 
-${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -${command} -ear ${deployed.file.path} -app ${targetDeployed.applicationName} -user ${container.username} -pw ${container.password} -domain ${container.domainPath}
+${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -serialize -${command} -ear ${deployed.file.path} -app ${targetDeployed.applicationName} -user ${container.username} -pw ${container.password} -domain ${container.domainPath}
