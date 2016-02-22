@@ -14,4 +14,4 @@ echo "quit" >> xld_run.ems
 
 cat xld_run.ems
 
-${targetDeployed.container.home}/bin/tibemsadmin -server "${targetDeployed.container.serverUrl}" -user ${targetDeployed.container.username} -password ${targetDeployed.container.password}  -script $workDir/xld_run.ems
+${targetDeployed.container.home}/bin/tibemsadmin -server "${targetDeployed.container.serverUrl}" -user ${targetDeployed.container.username} <#if targetDeployed.container.password?? >-password ${targetDeployed.container.password}</#if> -script $workDir/xld_run.ems

@@ -46,7 +46,7 @@
         <property name="home"/>
         <property name="serverUrl" default="tcp://localhost:7222"/>
         <property name="username" default="admin"/>
-        <property name="password" default="admin" kind="string" password="true"/>
+        <property name="password" kind="string" password="true" required="false"/>
 
         <property name="startEmsScript" default="tibcobw/ems/start-ems-server" hidden="true"/>
         <property name="stopEmsScript" default="tibcobw/ems/stop-ems-server" hidden="true"/>
@@ -123,14 +123,14 @@
     <!-- Execute EMS Queue -->
     <type type="tibco.Queue" extends="udm.BaseDeployed" deployable-type="tibco.QueueSpec" container-type="tibco.EmsServer">
         <generate-deployable type="tibco.QueueSpec" extends="udm.BaseDeployable"/>
-        <property name="store"/>
+        <property name="store" required="false"/>
         <property name="prefetch" default="10" kind="integer"/>
     </type>
 
     <!-- Execute EMS Topic -->
     <type type="tibco.Topic" extends="udm.BaseDeployed" deployable-type="tibco.TopicSpec" container-type="tibco.EmsServer">
         <generate-deployable type="tibco.TopicSpec" extends="udm.BaseDeployable"/>
-        <property name="store"/>
+        <property name="store" required="false"/>
         <property name="prefetch" default="10" kind="integer"/>
     </type>
 

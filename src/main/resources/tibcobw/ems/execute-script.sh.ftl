@@ -5,4 +5,4 @@
     FOR A PARTICULAR PURPOSE. THIS CODE AND INFORMATION ARE NOT SUPPORTED BY XEBIALABS.
 
 -->
-${deployed.container.home}/bin/tibemsadmin -server "${deployed.container.serverUrl}" -user ${deployed.container.username} -password ${deployed.container.password} -script ${deployed.file}
+${deployed.container.home}/bin/tibemsadmin -server "${deployed.container.serverUrl}" -user ${deployed.container.username} <#if targetDeployed.container.password?? >-password ${targetDeployed.container.password}</#if> -script ${deployed.file}

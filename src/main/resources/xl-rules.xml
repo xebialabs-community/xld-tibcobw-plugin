@@ -264,7 +264,7 @@
         <steps>
             <os-script>
                 <order>42</order>
-                <description expression="true">"Destroy queue %s to %s" % (previousDeployed.name, previousDOBeployed.container.name)</description>
+                <description expression="true">"Destroy queue %s to %s" % (previousDeployed.name, previousDeployed.container.name)</description>
                 <script>tibcobw/ems/destroy-resource</script>
                 <freemarker-context>
                     <targetDeployed expression="true">delta.previous</targetDeployed>
