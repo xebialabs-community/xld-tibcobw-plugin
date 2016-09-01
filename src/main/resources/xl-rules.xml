@@ -215,7 +215,6 @@
                     <targetDeployed expression="true">delta.deployed</targetDeployed>
                     <command>deploy</command>
                 </freemarker-context>
-                <upload-artifacts>false</upload-artifacts>
             </os-script>
             <checkpoint/>
         </steps>
