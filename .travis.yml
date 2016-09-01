@@ -2,14 +2,14 @@ language: java
 notifications:
   hipchat:
     rooms:
-      secure: XbA2Jh4yD9S6Kw1clA2u25iGFB+aYdONCKM2+l5tpa6HJbbCjSsa0MUaPSgQLGwosVCA4v2VdmW1AnU6K8OQFgIbSjUDl8GfocYXcadE4/LelY2E0kTw/VxG6V1QMOUThA3obS/1DwTDg8nVGzdTlwM4wHxXPADAk2+8GMhxH8E=
+      secure: TCJDN0t8Qr1YuX+ZT/HOMvfMoENxvlXMk1YiY/eWZGd5fkl1pAVM5GOsuYwScd3qf3KKoLSmcyJD7nKN2F8b/PX7kLB6OI/qumtSwUPS3PiuUtTY3K2+dSPsA+TanMM9pz99Fs6XH9NtEDSDAfkt/erse8nLm57nJ5o9ratmnE4=
 deploy:
   provider: releases
   api_key:
-    secure: JMWVFqrFUK5ct80EZNHKCfLhBsW28Nuxmn/QTIwEIUamvlA5xj8ndMzxwhDNAM4q989pab7rlcsM3Tc9oc+oBKoJ5TUvFGWmZy3R8H9mNcEIuszdianbyQehZzUNzTI/vB3ZQY0YbOSWjxv6I5TjHrx9B1X2HfnLvsiU/aIT2AI=
-  file: build/libs/xld-tibcobw-plugin-1.2.2.jar
+    secure: dTXLPL2ccrgTIajM/4dC2YzAPFh4SYDJWImpI6PDNsNqFB5RZPWX3Ql/Ch2fb0uKU+zrDFmSdH2i7ytB/3Gw18pdks4ANt1vgPF7GcuBhLmlNE79Yk46R3mXCBcP0A4Fal4i2GPK9mSX3BeHWmU9xiFgjc8NX11z+sF3ncoDR4g=
   skip_cleanup: true
+  file: build/libs/xld-tibcobw-plugin-1.2.2.jar
   on:
+    repo: xebialabs-community/xld-tibcobw-plugin
     all_branches: true
     tags: true
-
