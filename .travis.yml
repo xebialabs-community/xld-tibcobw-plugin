@@ -7,7 +7,7 @@ deploy:
   provider: releases
   api_key:
     secure: JMWVFqrFUK5ct80EZNHKCfLhBsW28Nuxmn/QTIwEIUamvlA5xj8ndMzxwhDNAM4q989pab7rlcsM3Tc9oc+oBKoJ5TUvFGWmZy3R8H9mNcEIuszdianbyQehZzUNzTI/vB3ZQY0YbOSWjxv6I5TjHrx9B1X2HfnLvsiU/aIT2AI=
-  file: build/libs/xld-tibcobw-plugin-1.0.0.jar
+  file: build/libs/xld-tibcobw-plugin-1.2.1.jar
   skip_cleanup: true
   on:
     all_branches: true
