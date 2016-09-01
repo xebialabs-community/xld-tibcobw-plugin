@@ -11,6 +11,8 @@ The Tibco Business Work plugin is a XL Deploy plugin that adds capability for de
 * a Tibco Ear to a Tibco domain and its XML configuration
 * a queue, a topic and an EMS Script on a EMS Server
 
+Warning: Tibco BW domains running on Windows Machines are not well supported (so far)
+
 # What's new in version 1.2.0 #
 
 * Fix bugs regarding libs deploy

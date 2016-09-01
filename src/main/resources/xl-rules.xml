@@ -90,16 +90,11 @@
             <operation>MODIFY</operation>
         </conditions>
         <steps>
-            <os-script>
+            <upload>
                 <order>50</order>
                 <description expression="true">"Deploy BWWA library %s to %s" % (deployed.name, deployed.container.name)</description>
-                <script>tibcobw/bwaa/deploy-lib</script>
-                <freemarker-context>
-                    <targetDeployed expression="true">delta.deployed</targetDeployed>
-                </freemarker-context>
-                <upload-artifacts>true</upload-artifacts>
-            </os-script>
-            <checkpoint/>
+                <target-path expression="true">"%s/%s.jar" % (deployed.container.BwaaLibraryPath, deployed.aspectName)</target-path>
+            </upload>
         </steps>
     </rule>
 
@@ -112,11 +107,7 @@
             <os-script>
                 <order>42</order>
                 <description expression="true">"Remove BWAA library %s from %s" % (previousDeployed.name, previousDeployed.container.name)</description>
-                <script>tibcobw/bwaa/remove-lib</script>
-                <freemarker-context>
-                    <targetDeployed expression="true">delta.previous</targetDeployed>
-                </freemarker-context>
-                <upload-artifacts>false</upload-artifacts>
+                <target-path expression="true">"%s/%s.jar" % (previousDeployed.container.BwaaLibraryPath, previousDeployed.aspectName)</target-path>
             </os-script>
             <checkpoint/>
         </steps>
@@ -129,15 +120,11 @@
             <operation>MODIFY</operation>
         </conditions>
         <steps>
-            <os-script>
+            <upload>
                 <order>50</order>
                 <description expression="true">"Deploy BWWA aspect %s to %s" % (deployed.name, deployed.container.name)</description>
-                <script>tibcobw/bwaa/deploy-aspect</script>
-                <freemarker-context>
-                    <targetDeployed expression="true">delta.deployed</targetDeployed>
-                </freemarker-context>
-                <upload-artifacts>true</upload-artifacts>
-            </os-script>
+                <target-path expression="true">"%s/%s-aspects.jar" % (deployed.container.BwaaAspectPath, deployed.aspectName)</target-path>
+            </upload>
             <checkpoint/>
         </steps>
     </rule>
@@ -146,17 +133,14 @@
         <conditions>
             <type>tibco.DeployedBwaaAspect</type>
             <operation>DESTROY</operation>
+            <operation>MODIFY</operation>
         </conditions>
         <steps>
-            <os-script>
+            <delete>
                 <order>42</order>
                 <description expression="true">"Remove BWAA aspect %s from %s" % (previousDeployed.name, previousDeployed.container.name)</description>
-                <script>tibcobw/bwaa/remove-aspect</script>
-                <freemarker-context>
-                    <targetDeployed expression="true">delta.previous</targetDeployed>
-                </freemarker-context>
-                <upload-artifacts>false</upload-artifacts>
-            </os-script>
+                <target-path expression="true">"%s/%s-aspects.jar" % (previousDeployed.container.BwaaAspectPath, previousDeployed.aspectName)</target-path>
+            </delete>
             <checkpoint/>
         </steps>
     </rule>
@@ -168,16 +152,11 @@
             <operation>MODIFY</operation>
         </conditions>
         <steps>
-            <os-script>
+            <upload>
                 <order>50</order>
                 <description expression="true">"Deploy prepend library %s to %s" % (deployed.name, deployed.container.name)</description>
-                <script>tibcobw/prepend-lib/deploy-lib</script>
-                <freemarker-context>
-                    <targetDeployed expression="true">delta.deployed</targetDeployed>
-                </freemarker-context>
-                <upload-artifacts>true</upload-artifacts>
-            </os-script>
-            <checkpoint/>
+                <target-path expression="true">"%s/%s" % (deployed.container.PrependLibsPath, deployed.libraryName)</target-path>
+            </upload>
         </steps>
     </rule>
 
@@ -185,18 +164,14 @@
         <conditions>
             <type>tibco.DeployedPrependLibrary</type>
             <operation>DESTROY</operation>
+            <operation>MODIFY</operation>
         </conditions>
         <steps>
-            <os-script>
+            <delete>
                 <order>42</order>
+                <target-path expression="true">"%s/%s" % (previousDeployed.container.PrependLibsPath, previousDeployed.libraryName)</target-path>
                 <description expression="true">"Remove prepend library %s from %s" % (previousDeployed.name, previousDeployed.container.name)</description>
-                <script>tibcobw/prepend-lib/remove-lib</script>
-                <freemarker-context>
-                    <targetDeployed expression="true">delta.previous</targetDeployed>
-                </freemarker-context>
-                <upload-artifacts>false</upload-artifacts>
-            </os-script>
-            <checkpoint/>
+            </delete>
         </steps>
     </rule>
 
