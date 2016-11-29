@@ -104,11 +104,11 @@
             <operation>DESTROY</operation>
         </conditions>
         <steps>
-            <os-script>
+            <delete>
                 <order>42</order>
                 <description expression="true">"Remove BWAA library %s from %s" % (previousDeployed.name, previousDeployed.container.name)</description>
                 <target-path expression="true">"%s/%s.jar" % (previousDeployed.container.BwaaLibraryPath, previousDeployed.aspectName)</target-path>
-            </os-script>
+            </delete>
             <checkpoint/>
         </steps>
     </rule>
