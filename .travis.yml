@@ -8,7 +8,7 @@ deploy:
   api_key:
     secure: dTXLPL2ccrgTIajM/4dC2YzAPFh4SYDJWImpI6PDNsNqFB5RZPWX3Ql/Ch2fb0uKU+zrDFmSdH2i7ytB/3Gw18pdks4ANt1vgPF7GcuBhLmlNE79Yk46R3mXCBcP0A4Fal4i2GPK9mSX3BeHWmU9xiFgjc8NX11z+sF3ncoDR4g=
   skip_cleanup: true
-  file: build/libs/xld-tibcobw-plugin-1.2.2.jar
+  file: build/libs/xld-tibcobw-plugin-1.2.3.jar
   on:
     repo: xebialabs-community/xld-tibcobw-plugin
     all_branches: true
