@@ -59,7 +59,8 @@ The tibco.Ear artifact should be created with configurationMap and configuration
 For example I'm using [Jenkins XLD plugin](https://wiki.jenkins-ci.org/display/JENKINS/XL+Deploy+Plugin)
 
 1. First step is a bash script
-    ```bash
+```
+bash
 jar xvf ${ADAPTER}-${VERSION}*.ear
 PLACEHOLDERS=$(xmlstarlet sel -N _=http://www.tibco.com/xmlns/dd \
     -t -v '/_:DeploymentDescriptors/_:NameValuePairs/_:*[_:requiresConfiguration="true"]/_:name' TIBCO.xml | xargs)
@@ -92,7 +93,8 @@ done
 
 echo PMAP=${PMAP} > env.txt
 echo SDK_PMAP=${SDK_PMAP} >> env.txt
-    ```
+```
+
 2. Then inject env.txt with [EnvInject Plugin](https://wiki.jenkins-ci.org/display/JENKINS/EnvInject+Plugin)
 3. Package application with XLD Jenkins plugin and assign '${PMAP}' to 'configurationMap' and '${SDK_PMAP}' to 'configurationMapAdapterSDK' properties
 
