@@ -125,7 +125,9 @@ And I can set different values to `bw.platform.services.retreiveresources.Httppo
 
 * **XL Deploy requirements**
 	* **XLD**: version 4.5.1+
-* The containers with tibco.Domain and tibco.Node objects should have xmllint and xmlstarlet tools
+* The containers with tibco.Domain and tibco.Node objects should have:
+	* xmllint 
+	* xmlstarlet
 
 ## Types ##
 
