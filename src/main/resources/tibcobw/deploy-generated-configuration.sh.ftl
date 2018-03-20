@@ -107,8 +107,8 @@ EOF
     xmlstarlet edit -L -u '/_:application/_:services/_:bw/_:checkpoints/@selected' -v '${targetDeployed.checkpointDataRepository}' $TMPXML
 </#if>
 
-    xmlstarlet ed -L -d  "/_:application/_:services/_:bw/_:bindings" $TMPXML || exit 1
-    xmlstarlet ed -L -a "/_:application/_:services/_:bw/_:enabled" --type elem -n xi_include \
+    xmlstarlet ed -L -d  "/_:application/_:services/_:bw[@name='${targetDeployed.applicationName}par']/_:bindings" $TMPXML || exit 1
+    xmlstarlet ed -L -a "/_:application/_:services/_:bw[@name='${targetDeployed.applicationName}par']/_:enabled" --type elem -n xi_include \
     	-i //xi_include --type attr -n xmlns:xi -v http://www.w3.org/2003/XInclude     \
     	-i //xi_include --type attr -n href -v $TMPFILE -r //xi_include -v xi:include $TMPXML || exit 1
 
