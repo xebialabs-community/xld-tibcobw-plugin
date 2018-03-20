@@ -2,9 +2,7 @@
 build
 plugins
 .idea/
-gradlew
-gradlew.bat
-gradle/
+supervisord.*
 xld-tibcobw-plugin.iml
 xld-tibcobw-plugin.ipr
 xld-tibcobw-plugin.iws
