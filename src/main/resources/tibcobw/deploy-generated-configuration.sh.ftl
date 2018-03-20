@@ -198,6 +198,7 @@ EOF
     if [ $APPMANAGE_EXIT_CODE -ne 0 ]
     then
         tail -25 ${traHome}/domain/${container.domainPath}/logs/ApplicationManagement.log
+	exit 2
     exit
     
     rm $TMPXML
