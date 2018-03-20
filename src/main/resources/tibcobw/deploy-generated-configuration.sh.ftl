@@ -23,7 +23,7 @@ TMPXML=$(mktemp /tmp/${targetDeployed.applicationName}-XXXXXXX.xml)
 
     cat > $TMPFILE << EOF
 <bindings>
-    <binding name="${targetDeployed.applicationName}par">
+    <binding name="${targetDeployed.applicationName}-binding">
         <machine>${targetDeployed.firstNode.host.address}</machine>
         <product>
             <type>BW</type>
@@ -51,7 +51,7 @@ TMPXML=$(mktemp /tmp/${targetDeployed.applicationName}-XXXXXXX.xml)
 
 <#if targetDeployed.secondNode??>
 
-    <binding name="${targetDeployed.applicationName}-1par">
+    <binding name="${targetDeployed.applicationName}-binding1">
         <machine>${targetDeployed.secondNode.host.address}</machine>
         <product>
             <type>BW</type>
@@ -85,30 +85,30 @@ EOF
 
 <#if targetDeployed.runFaultTolerant>
 
-    xmlstarlet ed -L  -u "/_:application/_:services/_:bw[@name='${targetDeployed.applicationName}par']/_:isFt" -v "true" $TMPXML
-    xmlstarlet ed -L  -a "/_:application/_:services/_:bw[@name='${targetDeployed.applicationName}par']/_:isFt" --type elem -n "faultTolerant" $TMPXML
-    xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw[@name='${targetDeployed.applicationName}par']/_:faultTolerant" --type elem -n "hbInterval" -v ${targetDeployed.heartbeatInterval} $TMPXML
-    xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw[@name='${targetDeployed.applicationName}par']/_:faultTolerant" --type elem -n "activationInterval" -v ${targetDeployed.activationInterval} $TMPXML
-    xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw[@name='${targetDeployed.applicationName}par']/_:faultTolerant" --type elem -n "preparationDelay" -v ${targetDeployed.activationDelay} $TMPXML
+    xmlstarlet ed -L  -u "/_:application/_:services/_:bw[@name='${targetDeployed.applicationName}.par']/_:isFt" -v "true" $TMPXML
+    xmlstarlet ed -L  -a "/_:application/_:services/_:bw[@name='${targetDeployed.applicationName}.par']/_:isFt" --type elem -n "faultTolerant" $TMPXML
+    xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw[@name='${targetDeployed.applicationName}.par']/_:faultTolerant" --type elem -n "hbInterval" -v ${targetDeployed.heartbeatInterval} $TMPXML
+    xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw[@name='${targetDeployed.applicationName}.par']/_:faultTolerant" --type elem -n "activationInterval" -v ${targetDeployed.activationInterval} $TMPXML
+    xmlstarlet ed -L  --subnode "/_:application/_:services/_:bw[@name='${targetDeployed.applicationName}.par']/_:faultTolerant" --type elem -n "preparationDelay" -v ${targetDeployed.activationDelay} $TMPXML
 
 </#if>
 
 <#if targetDeployed.checkpointDataRepository != "Local File" >
     <#if targetDeployed.checkpointTablePrefix??> 
-        xmlstarlet edit -L -u '/_:application/_:services/_:bw[@name='${targetDeployed.applicationName}par']/_:checkpoints/_:tablePrefix' -v '${targetDeployed.checkpointTablePrefix}' $TMPXML
+        xmlstarlet edit -L -u '/_:application/_:services/_:bw[@name='${targetDeployed.applicationName}.par']/_:checkpoints/_:tablePrefix' -v '${targetDeployed.checkpointTablePrefix}' $TMPXML
     </#if>
-    xmlstarlet sel -t -v '/_:application/_:services/_:bw[@name='${targetDeployed.applicationName}par']/_:checkpoints/_:checkpoint[.="${targetDeployed.checkpointDataRepository}"]' $TMPXML
+    xmlstarlet sel -t -v '/_:application/_:services/_:bw[@name='${targetDeployed.applicationName}.par']/_:checkpoints/_:checkpoint[.="${targetDeployed.checkpointDataRepository}"]' $TMPXML
     XMLSTARLET_EXIT_CODE=$?
     if [ $XMLSTARLET_EXIT_CODE -ne 0 ]
     then
         echo "[ERROR] checkpointDataRepository is incorrect" >&2
         exit 5
     fi
-    xmlstarlet edit -L -u '/_:application/_:services/_:bw[@name='${targetDeployed.applicationName}par']/_:checkpoints/@selected' -v '${targetDeployed.checkpointDataRepository}' $TMPXML
+    xmlstarlet edit -L -u '/_:application/_:services/_:bw[@name='${targetDeployed.applicationName}.par']/_:checkpoints/@selected' -v '${targetDeployed.checkpointDataRepository}' $TMPXML
 </#if>
 
-    xmlstarlet ed -L -d  "/_:application/_:services/_:bw[@name='${targetDeployed.applicationName}par']/_:bindings" $TMPXML || exit 1
-    xmlstarlet ed -L -a "/_:application/_:services/_:bw[@name='${targetDeployed.applicationName}par']/_:enabled" --type elem -n xi_include \
+    xmlstarlet ed -L -d  "/_:application/_:services/_:bw[@name='${targetDeployed.applicationName}.par']/_:bindings" $TMPXML || exit 1
+    xmlstarlet ed -L -a "/_:application/_:services/_:bw[@name='${targetDeployed.applicationName}.par']/_:enabled" --type elem -n xi_include \
     	-i //xi_include --type attr -n xmlns:xi -v http://www.w3.org/2003/XInclude     \
     	-i //xi_include --type attr -n href -v $TMPFILE -r //xi_include -v xi:include $TMPXML || exit 1
 
@@ -156,7 +156,7 @@ EOF
         echo "---------------------------------------"
         echo "Processing ${key} with value  ${targetDeployed.configurationMapAdapterSDK[key]}"
         echo "Check if the value exists"
-	XML_SEL=$(xmlstarlet sel -t -v '/_:application/_:services/_:bw[@name='${targetDeployed.applicationName}par']/_:NVPairs/_:*/_:name="${key}"' $TMPXML)
+	XML_SEL=$(xmlstarlet sel -t -v '/_:application/_:services/_:bw[@name='${targetDeployed.applicationName}.par']/_:NVPairs/_:*/_:name="${key}"' $TMPXML)
         XMLSTARLET_EXIT_CODE=$?
         if [ $XMLSTARLET_EXIT_CODE -ne 0 ]
         then
@@ -166,7 +166,7 @@ EOF
         if [ "x$XML_SEL" = "xtrue" ]
         then
             echo "Get the packaged (default) value for ${key}"
-            xmlstarlet sel -t -v '/_:application/_:services/_:bw[@name='${targetDeployed.applicationName}par']/_:NVPairs/*[_:name="${key}"]/_:value' $TMPXML
+            xmlstarlet sel -t -v '/_:application/_:services/_:bw[@name='${targetDeployed.applicationName}.par']/_:NVPairs/*[_:name="${key}"]/_:value' $TMPXML
             XMLSTARLET_EXIT_CODE=$?
             if [ $XMLSTARLET_EXIT_CODE -ne 0 ]
             then
@@ -177,7 +177,7 @@ EOF
                 echo "Parameter ${key} isn't defined for deploy"
             else
                 echo "Change the value"
-                xmlstarlet edit -L -u '/_:application/_:services/_:bw[@name='${targetDeployed.applicationName}par']/_:NVPairs/*[_:name="${key}"]/_:value' -v '${targetDeployed.configurationMapAdapterSDK[key]}' $TMPXML
+                xmlstarlet edit -L -u '/_:application/_:services/_:bw[@name='${targetDeployed.applicationName}.par']/_:NVPairs/*[_:name="${key}"]/_:value' -v '${targetDeployed.configurationMapAdapterSDK[key]}' $TMPXML
                 XMLSTARLET_EXIT_CODE=$?
                 if [ $XMLSTARLET_EXIT_CODE -ne 0 ]
                 then
