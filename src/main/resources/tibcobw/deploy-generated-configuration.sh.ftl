@@ -23,7 +23,7 @@ TMPXML=$(mktemp /tmp/${targetDeployed.applicationName}-XXXXXXX.xml)
 
     cat > $TMPFILE << EOF
 <bindings>
-    <binding name="Process Archive">
+    <binding name="${targetDeployed.applicationName}.par">
         <machine>${targetDeployed.firstNode.host.address}</machine>
         <product>
             <type>BW</type>
@@ -51,7 +51,7 @@ TMPXML=$(mktemp /tmp/${targetDeployed.applicationName}-XXXXXXX.xml)
 
 <#if targetDeployed.secondNode??>
 
-    <binding name="Process Archive-1">
+    <binding name="${targetDeployed.applicationName}-1.par">
         <machine>${targetDeployed.secondNode.host.address}</machine>
         <product>
             <type>BW</type>
