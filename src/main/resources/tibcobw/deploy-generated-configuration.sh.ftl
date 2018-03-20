@@ -192,7 +192,13 @@ EOF
 	                                     
     </#list>
     echo "===XML configuration has been generated $TMPXML==="
-    ${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -serialize -${command} -deployConfig $TMPXML -app ${targetDeployed.applicationName} -user ${container.username} -pw ${container.password} -domain ${container.domainPath} -nostart || exit 2
+    ${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -serialize -${command} -deployConfig $TMPXML -app ${targetDeployed.applicationName} -user ${container.username} -pw ${container.password} -domain ${container.domainPath} -nostart
+    
+    APPMANAGE_EXIT_CODE=$?
+    if [ $APPMANAGE_EXIT_CODE -ne 0 ]
+    then
+        tail -25 ${traHome}/domain/${container.domainPath}/logs/ApplicationManagement.log
+    exit
     
     rm $TMPXML
 
