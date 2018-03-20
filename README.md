@@ -127,4 +127,4 @@ And I can set different values to `bw.platform.services.retreiveresources.Httppo
 
 This is below a typical computed task by the Tibco Business Work plugin during an upgrade.
 
-![Deployment task](update-task.png)
+![Deployment task](images/update-task.png)
