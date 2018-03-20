@@ -1,5 +1,23 @@
 # Preface #
 
+[![Build Status][xld-tibcobw-plugin-travis-image]][xld-tibcobw-plugin-travis-url]
+[![Codacy Badge][xld-tibcobw-plugin-codacy-image] ][xld-tibcobw-plugin-codacy-url]
+[![Code Climate][xld-tibcobw-plugin-code-climate-image] ][xld-tibcobw-plugin-code-climate-url]
+[![License: MIT][xld-tibcobw-plugin-license-image] ][xld-tibcobw-plugin-license-url]
+[![Github All Releases][xld-tibcobw-plugin-downloads-image] ]()
+
+
+[xld-tibcobw-plugin-travis-image]: https://travis-ci.org/xebialabs-community/xld-tibcobw-plugin.svg?branch=master
+[xld-tibcobw-plugin-travis-url]: https://travis-ci.org/xebialabs-community/xld-tibcobw-plugin
+[xld-tibcobw-plugin-codacy-image]: https://api.codacy.com/project/badge/Grade/01effb612c17493882e93f00a4e8b94f
+[xld-tibcobw-plugin-codacy-url]: https://www.codacy.com/app/joris-dewinne/xld-tibcobw-plugin
+[xld-tibcobw-plugin-code-climate-image]: https://api.codeclimate.com/v1/badges/26be10b38437ae259be0/maintainability
+[xld-tibcobw-plugin-code-climate-url]: https://codeclimate.com/github/xebialabs-community/xld-tibcobw-plugin/maintainability
+[xld-tibcobw-plugin-license-image]: https://img.shields.io/badge/License-MIT-yellow.svg
+[xld-tibcobw-plugin-license-url]: https://opensource.org/licenses/MIT
+[xld-tibcobw-plugin-downloads-image]: https://img.shields.io/github/downloads/xebialabs-community/xld-tibcobw-plugin/total.svg
+
+
 This document describes the functionality provided by the [Tibco Business Works](http://www.tibco.com/products/automation/application-integration/activematrix-businessworks) plugin.
 
 See the [**XL Deploy product description**](https://docs.xebialabs.com/xl-deploy/) for background information on XL Deploy and deployment concepts.
