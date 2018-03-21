@@ -104,6 +104,11 @@
         <property name="TraMap" kind="map_string_string" required="false" description="TRA-file additional properties" category="Extended properties"/>
     </type>
 
+    <type-modification type="tibco.Ear">
+        <property name="firstNode" kind="string" required="true" category="Fault Tolerant" />
+        <property name="secondNode" kind="string" required="true" category="Fault Tolerant" />
+    </type-modification>
+
     <!-- Deploy EAR Configuration files -->
     <type type="tibco.DeployedConfiguration" extends="udm.BaseDeployedArtifact" deployable-type="tibco.Configuration" container-type="tibco.Domain">
         <generate-deployable type="tibco.Configuration" extends="udm.BaseDeployableFileArtifact"/>
