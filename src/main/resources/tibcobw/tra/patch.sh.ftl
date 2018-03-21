@@ -21,9 +21,9 @@ function java_property { #file.properties #property #value
 <#assign container=targetDeployed.container />
 <#assign traHome="${node.traPath}/${node.traVersion}"/>
 
-TMPXML=$(mktemp /tmp/${targetDeployed.applicationName}-XXXXXXX.xml)
+TMPXML=$(mktemp /tmp/${targetDeployed.name}-XXXXXXX.xml)
 
-${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -serialize -export -app ${targetDeployed.applicationName} -out $TMPXML -user ${container.username} -pw ${container.password} -domain ${container.domainPath}
+${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -serialize -export -app "${targetDeployed.applicationName}" -out $TMPXML -user ${container.username} -pw ${container.password} -domain ${container.domainPath}
 
 DEPL_NAME=$(xmlstarlet sel -t -v '/_:application/_:repoInstanceName' $TMPXML| sed 's/%%DOMAIN%%-//')
 TRA_FILE=${node.traPath}/domain/${targetDeployed.container.domainPath}/application/$DEPL_NAME/$DEPL_NAME-Process_Archive*.tra

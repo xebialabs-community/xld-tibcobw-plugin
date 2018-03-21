@@ -13,11 +13,11 @@
 <#assign container=targetDeployed.container />
 <#assign traHome="${container.tibcoHome}/tra/${container.version}"/>
 
-TMPXML=$(mktemp /tmp/${targetDeployed.applicationName}-XXXXXXX.xml)
+TMPXML=$(mktemp /tmp/${targetDeployed.name}-XXXXXXX.xml)
 
 <#if targetDeployed.configurationMap??>
 
-    ${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -serialize -export -app ${targetDeployed.applicationName} -out $TMPXML -user ${container.username} -pw ${container.password} -domain ${container.domainPath}
+    ${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -serialize -export -app "${targetDeployed.applicationName}" -out $TMPXML -user ${container.username} -pw ${container.password} -domain ${container.domainPath}
 
     TMPFILE=$(mktemp)
 
@@ -192,7 +192,7 @@ EOF
 	                                     
     </#list>
     echo "===XML configuration has been generated $TMPXML==="
-    ${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -serialize -${command} -deployConfig $TMPXML -app ${targetDeployed.applicationName} -user ${container.username} -pw ${container.password} -domain ${container.domainPath} -nostart
+    ${traHome}/bin/AppManage --propFile ${traHome}/bin/AppManage.tra -serialize -${command} -deployConfig $TMPXML -app "${targetDeployed.applicationName}" -user ${container.username} -pw ${container.password} -domain ${container.domainPath} -nostart
     
     APPMANAGE_EXIT_CODE=$?
     if [ $APPMANAGE_EXIT_CODE -ne 0 ]
