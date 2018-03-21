@@ -65,7 +65,7 @@
         <property name="applicationName"/>
         <property name="startAdapterAfterDeploy" kind="boolean" default="true"/>
         <property name="configurationMap" kind="map_string_string" required="false" />
-        <property name="configurationMapSesure" kind="map_string_string" password="true" required="false" />
+        <property name="configurationMapSecure" kind="map_string_string" password="true" required="false" />
         <property name="configurationMapAdapterSDK" kind="map_string_string" required="false" />
         <property name="checkpointDataRepository" kind="string" required="true" default="Local File" />
         <property name="checkpointTablePrefix" kind="string" required="false" />
