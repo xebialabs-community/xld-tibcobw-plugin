@@ -8,18 +8,19 @@
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-container = deployed.container
-nodes = [deployed.firstNode]
-if deployed.secondNode is not None:
-    nodes.append(deployed.secondNode)
-for node in nodes:
-    context.addStep(steps.os_script(
-        description="Patch TRA file for application %s on host %s" % (deployed.applicationName, node.host),
-        order=78,
-        target_host=node.host,
-        script="tibcobw/tra/patch",
-        freemarker_context={
-            "targetDeployed": deployed,
-            "node": node
-        }
-    ))
+if deployed.enableExtendedProperties:
+    container = deployed.container
+    nodes = [deployed.firstNode]
+    if deployed.secondNode is not None:
+        nodes.append(deployed.secondNode)
+    for node in nodes:
+        context.addStep(steps.os_script(
+            description="Patch TRA file for application %s on host %s" % (deployed.applicationName, node.host),
+            order=78,
+            target_host=node.host,
+            script="tibcobw/tra/patch",
+            freemarker_context={
+                "targetDeployed": deployed,
+                "node": node
+            }
+        ))
