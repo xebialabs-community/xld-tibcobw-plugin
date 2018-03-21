@@ -88,6 +88,7 @@
         <property name="maxHeapSize" kind="integer" default="256" required="true" category="JVM" />
         <property name="threadStackSize" kind="integer" default="256" required="true" category="JVM" />
 
+        <property name="enableExtendedProperties" kind="boolean" required="false" default="true" description="if enabled, the tra configuration will be patched on each node." category="Extended properties"/>
         <property name="MaxPermSize" kind="integer" required="false" description="in megabytes, empty for default" category="Extended properties"/>
         <property name="javaAgent" kind="list_of_string" required="false" description="Path to JAR file, for exmaple /opt/tibco/instr/instr.jar" category="Extended properties"/>
         <property name="agentPath" kind="list_of_string" required="false" description="For example /opt/yourkit-agent/libyjpagent.so\=delay\=10000,telemetrylimit\=2" category="Extended properties"/>
