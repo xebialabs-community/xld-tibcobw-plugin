@@ -197,7 +197,7 @@ EOF
     APPMANAGE_EXIT_CODE=$?
     if [ $APPMANAGE_EXIT_CODE -ne 0 ]
     then
-        tail -25 ${traHome}/domain/${container.domainPath}/logs/ApplicationManagement.log
+        tail -25 ${container.tibcoHome}/tra/domain/${container.domainPath}/logs/ApplicationManagement.log
 	exit 2
     fi
     
