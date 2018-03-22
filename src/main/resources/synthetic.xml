@@ -106,7 +106,7 @@
 
     <type-modification type="tibco.Ear">
         <property name="firstNode" kind="string" required="true" category="Fault Tolerant" />
-        <property name="secondNode" kind="string" required="true" category="Fault Tolerant" />
+        <property name="secondNode" kind="string" required="false" category="Fault Tolerant" />
     </type-modification>
 
     <!-- Deploy EAR Configuration files -->
